@@ -2,18 +2,18 @@
 import { ref } from 'vue'
 import BreadcrumbDefault from '@/Components/Breadcrumbs/BreadcrumbDefault.vue'
 import CalendarCard from '@/Components/CalendarCard.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
-const pageTitle = ref('Calender')
+const pageTitle = ref('Calenders')
 </script>
 
 <template>
-  <DefaultLayout>
+  <AuthenticatedLayout>
     <div class="mx-auto max-w-7xl">
       <!-- Breadcrumb Start -->
       <BreadcrumbDefault :pageTitle="pageTitle" />
       <!-- Breadcrumb End -->
       <CalendarCard />
     </div>
-  </DefaultLayout>
+  </AuthenticatedLayout>
 </template>

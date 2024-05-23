@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import BreadcrumbDefault from '@/Components/Breadcrumbs/BreadcrumbDefault.vue'
 import ProfileCard from '@/Components/ProfileCard.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 
 const pageTitle = ref('Profile')
 </script>

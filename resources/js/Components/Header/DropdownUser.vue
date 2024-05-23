@@ -2,9 +2,12 @@
 import { Link, useForm } from '@inertiajs/vue3';
 import { onClickOutside } from '@vueuse/core'
 import { ref } from 'vue'
+import { usePage } from '@inertiajs/vue3';
 
 const target = ref(null)
 const dropdownOpen = ref(false)
+
+const user = usePage().props.auth.user;
 
 onClickOutside(target, () => {
   dropdownOpen.value = false
@@ -26,7 +29,7 @@ const logout = () => {
       @click.prevent="dropdownOpen = !dropdownOpen"
     >
       <span class="hidden text-right lg:block">
-        <span class="block text-sm font-medium text-black dark:text-white">Thomas Anree</span>
+        <span class="block text-sm font-medium text-black dark:text-white">{{ user.name }}</span>
         <span class="block text-xs font-medium">UX Designer</span>
       </span>
 

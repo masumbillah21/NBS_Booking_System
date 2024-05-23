@@ -4,7 +4,7 @@ import BreadcrumbDefault from '@/Components/Breadcrumbs/BreadcrumbDefault.vue'
 import TableOne from '@/Components/Tables/TableOne.vue'
 import TableTwo from '@/Components/Tables/TableTwo.vue'
 import TableThree from '@/Components/Tables/TableThree.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 
 const pageTitle = ref('Tables')
 </script>

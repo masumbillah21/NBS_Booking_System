@@ -1,24 +1,53 @@
-<script setup lang="ts">
+<script setup>
+import Checkbox from '@/Components/Checkbox.vue';
+import GuestLayout from '@/Layouts/GuestLayout.vue';
+import InputError from '@/Components/InputError.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import TextInput from '@/Components/TextInput.vue';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import DefaultAuthCard from '@/Components/Auths/DefaultAuthCard.vue'
 import InputGroup from '@/Components/Auths/InputGroup.vue'
-import BreadcrumbDefault from '@/Components/Breadcrumbs/BreadcrumbDefault.vue'
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
-import { Link } from '@inertiajs/vue3'
 
-import { ref } from 'vue'
+defineProps({
+    canResetPassword: {
+        type: Boolean,
+    },
+    status: {
+        type: String,
+    },
+});
 
-const pageTitle = ref('Sign In')
+const form = useForm({
+    email: '',
+    password: '',
+    remember: false,
+});
+
+const submit = () => {
+    form.post(route('login'), {
+        onFinish: () => form.reset('password'),
+    });
+};
 </script>
 
 <template>
   <DefaultLayout>
-    <!-- Breadcrumb Start -->
-    <BreadcrumbDefault :pageTitle="pageTitle" />
-    <!-- Breadcrumb End -->
-
-    <DefaultAuthCard subtitle="Start for free" title="Sign In to TailAdmin">
-      <form>
-        <InputGroup label="Email" type="email" placeholder="Enter your email">
+    <Head title="Log in" />
+    <DefaultAuthCard subtitle="Start for free" title="Sign In">
+        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+            {{ status }}
+        </div>
+      <form @submit.prevent="submit">
+        <InputGroup label="Email" 
+            type="email" 
+            id="email"
+            placeholder="Enter your email" 
+            v-model="form.email"
+            required
+            autofocus
+            autocomplete="username">
           <svg
             class="fill-current"
             width="22"
@@ -35,8 +64,14 @@ const pageTitle = ref('Sign In')
             </g>
           </svg>
         </InputGroup>
+        <InputError class="mt-2" :message="form.errors.email" />
 
-        <InputGroup label="Password" type="password" placeholder="6+ Characters, 1 Capital letter">
+        <InputGroup label="Password" 
+            type="password" 
+            placeholder="6+ Characters, 1 Capital letter" 
+            v-model="form.password"
+            required
+            autocomplete="current-password">
           <svg
             class="fill-current"
             width="22"
@@ -58,11 +93,18 @@ const pageTitle = ref('Sign In')
           </svg>
         </InputGroup>
 
+        <div class="block mt-4">
+            <label class="flex items-center">
+                <Checkbox name="remember" v-model:checked="form.remember" />
+                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
+            </label>
+        </div>
         <div class="mb-5 mt-6">
           <input
             type="submit"
             value="Sign In"
             class="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
+            :disabled="form.processing"
           />
         </div>
 
@@ -108,8 +150,16 @@ const pageTitle = ref('Sign In')
         <div class="mt-6 text-center">
           <p class="font-medium">
             Don’t have any account?
-            <Link href="/auth/signup" class="text-primary">Sign up</Link>
+            <Link :href="route('register')" class="text-primary">Sign up</Link>
           </p>
+
+        <Link
+            v-if="canResetPassword"
+            :href="route('password.request')"
+            class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+        >
+            Forgot your password?
+        </Link>
         </div>
       </form>
     </DefaultAuthCard>
