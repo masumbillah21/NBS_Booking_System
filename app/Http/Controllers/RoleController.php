@@ -43,19 +43,34 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $request->validate([
-            'name' => 'required',
-            'permissions' => 'required|array'
-        ]);
+        try{
+            $request->validate([
+                'name' => 'required',
+                'permissions' => 'required|array'
+            ]);
+            
+            DB::beginTransaction();
+    
+            $role = Role::create([
+                'name' => $request->name,
+            ]);
+            
 
-        $role = Role::create([
-            'name' => $request->name,
-        ]);
+            $role->permissions()->attach($request->permissions);
 
-        $role->permissions()->attach($request->permissions);
 
-        return redirect()->back()->with('success', 'Role created successfully');
+            DB::commit();
+            
+            return redirect()->back()->with('success', 'Role created successfully');
+
+        }catch (ValidationException $e) {
+            DB::rollback();
+            return redirect()->back()->withErrors($e->validator->errors()->all());
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withErrors('Role failed to update: ' . $e->getMessage());
+        }
+
     }
 
     /**
