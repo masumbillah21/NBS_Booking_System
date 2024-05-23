@@ -1,10 +1,12 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
     return Inertia::render('Frontend/Welcome', [
@@ -25,11 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-    Route::get('/calender', function(){
-        return Inertia::render('CalendarView', [
-            'masum' => 'Test Data'
-        ]);
-    })->name('calender');
+    Route::resource('permissions', PermissionController::class);
+    Route::resource('roles', RoleController::class);
 
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
