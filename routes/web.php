@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ServiceCategoryController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
@@ -38,6 +39,8 @@ Route::middleware('auth')->group(function () {
 });
 
 //Service Management
+
+//Category
 Route::middleware(['auth', 'role:admin,service_provider'])->group(function () {
     Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('categories/form/{id?}', [CategoryController::class, 'createOrEdit'])->name('categories.form');
@@ -47,6 +50,7 @@ Route::middleware(['auth', 'role:admin,service_provider'])->group(function () {
     Route::delete('categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });
 
+//Service
 Route::middleware(['auth', 'role:admin,service_provider'])->group(function () {
     Route::get('services', [ServiceController::class, 'index'])->name('services.index');
     Route::get('services/form/{id?}', [ServiceController::class, 'createOrEdit'])->name('services.form');
@@ -54,6 +58,15 @@ Route::middleware(['auth', 'role:admin,service_provider'])->group(function () {
     // Route::get('services/{id}/edit', [ServiceController::class, 'edit'])->name('services.edit');
     Route::put('services/{id}', [ServiceController::class, 'update'])->name('services.update');
     Route::delete('services/{id}', [ServiceController::class, 'destroy'])->name('services.destroy');
+});
+
+//Service_Category
+Route::middleware(['auth', 'role:admin,service_provider'])->group(function () {
+    Route::get('/service_categories', [ServiceCategoryController::class, 'index'])->name('service_categories.index');
+    Route::get('/service_categories/form/{id?}', [ServiceCategoryController::class, 'createOrEdit'])->name('service_categories.form');
+    Route::post('/service_categories', [ServiceCategoryController::class, 'store'])->name('service_categories.store');
+    Route::put('/service_categories/{id}', [ServiceCategoryController::class, 'update'])->name('service_categories.update');
+    Route::delete('/service_categories/{id}', [ServiceCategoryController::class, 'destroy'])->name('service_categories.destroy');
 });
 
 
