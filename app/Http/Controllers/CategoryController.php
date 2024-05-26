@@ -21,10 +21,15 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function createOrEdit($id)
     {
-       $categories = Category::all() ;
-       return Inertia::render('Categories/Create', ['categories' => $categories]);
+        $category = $id ? Category::findOrFail($id) : new Category();
+        $categories = Category::all();
+        return Inertia::render('Categories/Form', [
+            'category' => $category,
+            'categories' => $categories,
+            'isEdit' => $id ? true : false
+        ]);
     }
 
     /**
@@ -53,12 +58,15 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+
+    /*
     public function edit(Category $category, $id)
     {
         $category = Category::findOrFail($id);
         $categories = Category::all();
         return Inertia::render('Categories/Edit', ['category' => $category, 'categories' => $categories]);
     }
+    */
 
     /**
      * Update the specified resource in storage.

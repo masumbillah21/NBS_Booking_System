@@ -21,12 +21,18 @@ class ServiceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function createOrEdit($id)
     {
+        $service = $id ? Service::findOrFail($id) : new Service();
         $categories = Category::all();
         // $providers = ServiceProvider::all(); //When service provider model is added
 
-        return Inertia::render('Services/Create', ['categories' => $categories, 'providers' => []]); //$providers]);
+        return Inertia::render('Services/Form', [
+            'service' => $service,
+            'categories' => $categories,
+            'providers' => [], //$providers
+            'isEdit' => $id ? true : false
+        ]);
     }
 
     /**
@@ -58,6 +64,7 @@ class ServiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+    /*
     public function edit(Service $service, $id)
     {
         $service = Service::findOrFail($id);
@@ -65,6 +72,7 @@ class ServiceController extends Controller
         // $providers = ServiceProvider::all(); //When service provider model is added
         return Inertia::render('Services/Edit', ['service' => $service, 'categories' => $categories, 'providers' => []]); //$providers]);
     }
+    */
 
     /**
      * Update the specified resource in storage.
