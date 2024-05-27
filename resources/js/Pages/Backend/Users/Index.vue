@@ -10,7 +10,7 @@
   import { Head, useForm, usePage } from '@inertiajs/vue3'
 import { hasPermission } from '@/utils/hasPermission';
 
-  const rolesData: any = usePage().props.rolesData
+  const usersData: any = usePage().props.usersData
 
   const form: any = useForm({
     id: 0,
@@ -26,11 +26,11 @@ import { hasPermission } from '@/utils/hasPermission';
     form.reset();
   };
 
-  const deleteRole = async () => {
+  const deleteUser = async () => {
     isModalDangerActive.value = false
-    form.delete(route('roles.destroy', form.id), {
+    form.delete(route('users.destroy', form.id), {
       onSuccess: () => {
-        const index = rows.value.findIndex((role: any) => role.id === form.id)
+        const index = rows.value.findIndex((user: any) => user.id === form.id)
         if (index !== -1) {
           rows.value.splice(index, 1)
           rows.value = [...rows.value]
@@ -38,7 +38,7 @@ import { hasPermission } from '@/utils/hasPermission';
       }
     })
   }
-  const showModle = (id: string | number) => {
+  const showModal = (id: string | number) => {
     isModalDangerActive.value = true
     form.id = id
   }
@@ -54,36 +54,40 @@ import { hasPermission } from '@/utils/hasPermission';
   const cols = ref([
     { title: 'SL', field: 'sl', isUnique: true, type: 'number', width: '40px', hide: false },
     { title: 'Name', field: 'name', width: '200px', hide: false },
-    { title: 'Permissions', field: 'permissions', hide: false },
+    { title: 'Email', field: 'email', hide: false },
+    { title: 'Designation', field: 'designation', hide: false },
+    { title: 'Status', field: 'status', hide: false },
     { title: 'Created', field: 'created_at', width: '200px', hide: false },
     { title: 'Updated', field: 'updated_at', width: '200px', hide: false },
     { title: 'Action', field: 'action',width: '200px', hide: false },
   ])
 
-  const rows = ref(rolesData.map((role: any, index: number) => {
+  const rows = ref(usersData.map((user: any, index: number) => {
     return {
       sl: index + 1,
-      id: role.id,
-      name: role.name,
-      permissions: role.permissions.map((permission: any) => permission.name).join(', '),
-      created_at: role.created_at,
-      updated_at: role.updated_at,
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      designation: user.designation,
+      status: user.status == 0 ? 'Inactive' : 'Active',
+      created_at: user.created_at,
+      updated_at: user.updated_at,
     }
   }))
 
-  const filteredRole = computed(() => {
-    if (!params.search) return rolesData.slice(0, params.pagesize);
+  const filteredUser = computed(() => {
+    if (!params.search) return usersData.slice(0, params.pagesize);
     const query = params.search.toLowerCase();
-    return rolesData?.filter((item: any) => item.name.toLowerCase().includes(query));
+    return usersData?.filter((item: any) => item.name.toLowerCase().includes(query));
   })
 </script>
 
 <template>
   <AuthenticatedLayout>
 
-    <Head title="Roles" />
+    <Head title="Users" />
     <!-- Breadcrumb Start -->
-    <BreadcrumbDefault pageTitle="Roles" />
+    <BreadcrumbDefault pageTitle="Users" />
     <!-- Breadcrumb End -->
 
     <div class="flex flex-col gap-10">
@@ -111,15 +115,15 @@ import { hasPermission } from '@/utils/hasPermission';
 
         </div>
         <Vue3Datatable :rows="rows" :columns="cols" :sortable="true" :sortColumn="params.sort_column"
-          :sortDirection="params.sort_direction" :search="params.search" :columnFilter="true" @change="filteredRole"
+          :sortDirection="params.sort_direction" :search="params.search" :columnFilter="true" @change="filteredUser"
           :cloneHeaderInFooter="true" skin="bh-table-compact" class="column-filter p-4"
           rowClass="bg-white dark:bg-slate-800 dark:text-slate-300 dark:border-gray-600">
           <template #action="data">
             <template class="flex">
-              <BaseButtonLink v-if="hasPermission('role.update')" routeName="roles.edit" :routeParams="data.value.id" icon="fas fa-edit" label="Edit"
+              <BaseButtonLink v-if="hasPermission('user.update')" routeName="users.edit" :routeParams="data.value.id" icon="fas fa-edit" label="Edit"
                 color="info" small />
-              <BaseButtonLink v-if="hasPermission('role.delete')" class="ml-2" icon="fas fa-trash-alt" label="Delete" color="danger" small
-                @click="showModle(data.value.id)" />
+              <BaseButtonLink v-if="hasPermission('user.delete')" class="ml-2" icon="fas fa-trash-alt" label="Delete" color="danger" small
+                @click="showModal(data.value.id)" />
             </template>
           </template>
         </Vue3Datatable>
@@ -129,11 +133,11 @@ import { hasPermission } from '@/utils/hasPermission';
     <Modal :show="isModalDangerActive" @close="closeModal">
       <div class="p-6">
         <h2 class="text-lg font-medium text-red-900 dark:text-red-100">
-          Are you sure you want to delete this role?
+          Are you sure you want to delete this user?
         </h2>
         <div class="mt-6 flex justify-end">
           <BaseButtonLink class="ml-2" icon="fas fa-trash-alt" label="Delete" color="danger" small
-            @click="deleteRole" />
+            @click="deleteUser" />
         </div>
       </div>
     </Modal>

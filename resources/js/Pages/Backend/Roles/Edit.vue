@@ -59,7 +59,7 @@
         <!-- Breadcrumb End -->
         <DefaultCard :cardTitle="(roleData !== null) ? 'Edit role' : 'Create role'">
             <form @submit.prevent="submit">
-                <InputGroup label="Name" class="mb-2" type="text" id="name" placeholder="Enter permission name"
+                <InputGroup label="Name" class="mb-2" type="text" id="name" placeholder="Enter role name"
                     v-model="form.name" required autofocus autocomplete="username">
                 </InputGroup>
                 <InputError class="mt-2" :message="form.errors.name" />

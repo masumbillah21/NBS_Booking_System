@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
@@ -29,6 +30,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('permissions', PermissionController::class);
     Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
 
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');

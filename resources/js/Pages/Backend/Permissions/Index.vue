@@ -8,6 +8,7 @@
   import '@bhplugin/vue3-datatable/dist/style.css'
 
   import { Head, useForm, usePage } from '@inertiajs/vue3'
+import { hasPermission } from '@/utils/hasPermission';
 
   const permissionsData: any = usePage().props.permissionsData
 
@@ -126,8 +127,8 @@
             >
               <template #action="data">
                 <template class="flex">
-                  <BaseButtonLink routeName="permissions.edit" :routeParams="data.value.id" icon="fas fa-edit" label="Edit" color="info" small />
-                  <BaseButtonLink class="ml-2" icon="fas fa-trash-alt" label="Delete" color="danger" small @click="showModle(data.value.id)"/>
+                  <BaseButtonLink v-if="hasPermission('permission.update')" routeName="permissions.edit" :routeParams="data.value.id" icon="fas fa-edit" label="Edit" color="info" small />
+                  <BaseButtonLink v-if="hasPermission('permission.delete')" class="ml-2" icon="fas fa-trash-alt" label="Delete" color="danger" small @click="showModle(data.value.id)"/>
                 </template>
               </template>
             </Vue3Datatable>

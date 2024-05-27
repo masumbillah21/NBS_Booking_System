@@ -32,23 +32,13 @@
     };
 
     const create = () => {
-        form
-            .transform((data: any) => ({
-                ...data,
-                terms: form.terms && form.terms.length,
-            }))
-            .post(route("permissions.store"), {
+        form.post(route("permissions.store"), {
                 onSuccess: () => form.reset(),
             });
     };
 
     const update = () => {
-        form
-            .transform((data: any) => ({
-                ...data,
-                terms: form.terms && form.terms.length,
-            }))
-            .post(route("permissions.update", form.id));
+        form.post(route("permissions.update", form.id));
     };
 </script>
 

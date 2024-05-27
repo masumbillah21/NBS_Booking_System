@@ -56,17 +56,23 @@ class HandleInertiaRequests extends Middleware
         
         $user = $request->user();
 
+        
+
         if ($user->roles() == null) {
             return [];
         }
 
         $roles = $user->roles()->with('permissions')->get();
 
+        
+
         $permissions = $roles->flatMap(function ($role) {
             return $role->permissions;
         });
 
         $uniquePermissions = $permissions->unique('id');
+
+
 
         return $uniquePermissions;
     }

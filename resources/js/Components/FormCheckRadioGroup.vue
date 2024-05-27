@@ -3,6 +3,9 @@ import { computed } from 'vue'
 import FormCheckRadio from '@/Components/FormCheckRadio.vue'
 
 const props = defineProps({
+  label:{
+    type: String,
+  },
   options: {
     type: Object,
     default: () => {}
@@ -43,6 +46,7 @@ const computedValue = computed({
 
 <template>
   <div class="flex justify-start flex-wrap -mb-3" :class="{ 'flex-col': isColumn }">
+    <p v-if="label" class="mb-2.5 w-full block font-medium text-black dark:text-white"> {{ label }} </p>
     <FormCheckRadio
       v-for="(value, key) in options"
       :key="key"

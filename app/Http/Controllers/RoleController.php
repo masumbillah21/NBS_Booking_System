@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class RoleController extends Controller
@@ -17,7 +18,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //$this->authorize('view', Role::class);
+        if (!Auth::user()->hasPermission('role.view')) {
+            abort(403);
+        }
 
         $roles = Role::with('permissions')->get();
     
@@ -31,6 +34,10 @@ class RoleController extends Controller
      */
     public function create()
     {
+        if (!Auth::user()->hasPermission('role.create')) {
+            abort(403);
+        }
+
         $permissionList = Permission::pluck('name', 'id');
 
         return Inertia::render('Backend/Roles/Edit', [
@@ -43,6 +50,10 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::user()->hasPermission('role.create')) {
+            abort(403);
+        }
+
         try{
             $request->validate([
                 'name' => 'required',
@@ -86,6 +97,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        if (!Auth::user()->hasPermission('role.update')) {
+            abort(403);
+        }
         
         $permissionList = Permission::pluck('name', 'id');
 
@@ -100,6 +114,10 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        if (!Auth::user()->hasPermission('role.update')) {
+            abort(403);
+        }
+
         try {
             $validate = $request->validate([
                 'name' => 'required',
@@ -128,6 +146,10 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        if (!Auth::user()->hasPermission('role.delete')) {
+            abort(403);
+        }
+
         $role->permissions()->detach();
         $role->delete();
         return redirect()->back()->with('success', 'Role deleted successfully');

@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class PermissionController extends Controller
 {
@@ -14,6 +15,10 @@ class PermissionController extends Controller
      */
     public function index()
     {
+
+        if (!Auth::user()->hasPermission('permission.view')) {
+            abort(403);
+        }
 
         $permissions = Permission::orderBy('id', 'desc')->get();
         return Inertia::render('Backend/Permissions/Index', ['permissionsData' => $permissions]);
@@ -24,6 +29,9 @@ class PermissionController extends Controller
      */
     public function create()
     {
+        if (!Auth::user()->hasPermission('permission.create')) {
+            abort(403);
+        }
 
         return Inertia::render('Backend/Permissions/Edit');
     }
@@ -33,6 +41,9 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::user()->hasPermission('permission.create')) {
+            abort(403);
+        }
 
         $validated = $request->validate([
             'name' => 'required|unique:permissions',
@@ -56,6 +67,10 @@ class PermissionController extends Controller
     public function edit(Permission $permission)
     {
 
+        if (!Auth::user()->hasPermission('permission.update')) {
+            abort(403);
+        }
+
         return Inertia::render('Backend/Permissions/Edit', ['permission' => $permission]);
     }
 
@@ -64,6 +79,10 @@ class PermissionController extends Controller
      */
     public function update(Request $request, Permission $permission)
     {
+
+        if (!Auth::user()->hasPermission('permission.update')) {
+            abort(403);
+        }
 
         $validated = $request->validate([
             'name' => 'required|'.Rule::unique(Permission::class)->ignore($permission->id),
@@ -80,6 +99,10 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission)
     {
+
+        if (!Auth::user()->hasPermission('permission.delete')) {
+            abort(403);
+        }
 
         $permission->delete();
         return redirect()->back()->with('success', 'Permission deleted successfully!');
