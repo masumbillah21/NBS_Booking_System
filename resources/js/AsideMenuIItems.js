@@ -7,6 +7,15 @@ export default [
           route: '/dashboard',
         },
         {
+          icon: 'fas fa-th-large',
+          label: 'Services Provider',
+          route: '/dashboard',
+          children: [
+            { label: 'Providers List', route: '/services-provider' },
+            { label: 'Add New Provider', route: '/services-provider/create' }
+          ]
+        },
+        {
           icon: "fas fa-users",
           label: 'Roles',
           route: '#',

@@ -9,4 +9,7 @@ class ServiceProvider extends Model
 {
     use HasFactory;
     protected $fillable = ['user_id','company_name','description','logo','address','phone_number','email','status'];
+    function Users(){
+        return $this->belongsTo(User::class);
+    }
 }

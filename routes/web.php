@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServicesProviderController;
+use App\Http\Controllers\ServicesProvidersController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,6 +32,17 @@ Route::middleware('auth')->group(function () {
             'masum' => 'Test Data'
         ]);
     })->name('calender');
+
+
+    // Services Provider route
+    Route::resource('/services-provider',ServicesProvidersController::class);
+
+
+    // Route::get('services-provider',[ServicesProviderController::class,'index'])->name('servicesProvider.index');
+    // Route::get('services-provider/create',[ServicesProviderController::class,'create'])->name('servicesProvider.create');
+    // Route::post('services-provider',[ServicesProviderController::class,'store']);
+    // Route::delete('/services-provider/{servicesProvider}',[ServicesProviderController::class,'destroy']);
+
 
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
