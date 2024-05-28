@@ -37,6 +37,12 @@ export default [
             { label: 'Add New', route: 'users.create', permission: 'user.create' }
           ]
         },
+        {
+          icon: "fas fa-cogs",
+          label: 'Setings',
+          route: 'settings.index',
+          permission: 'setting.view',
+        },
       ]
     },
     {
