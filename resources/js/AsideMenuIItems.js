@@ -8,11 +8,11 @@ export default [
         },
         {
           icon: 'fas fa-th-large',
-          label: 'Services Provider',
+          label: 'Providers',
           route: '/dashboard',
           children: [
-            { label: 'Providers List', route: '/services-provider' },
-            { label: 'Add New Provider', route: '/services-provider/create' }
+            { label: 'Providers', route: '/services-provider' },
+            { label: 'Add New', route: '/services-provider/create' }
           ]
         },
         {

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('company_name');
             $table->text('description');
-            $table->string('logo');
+            $table->string('logo')->nullable();
             $table->string('address');
             $table->string('phone_number');
             $table->string('email')->unique();

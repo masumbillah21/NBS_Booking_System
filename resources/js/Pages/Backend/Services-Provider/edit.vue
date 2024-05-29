@@ -6,6 +6,7 @@ import InputGroup from '@/Components/Forms/InputGroup.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import SelectGroup from '@/Components/Forms/SelectGroup.vue';
+import FormFilePicker from '@/Components/Forms/FormFilePicker.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3'
 
 const serviceProviderData: any = usePage().props.serviceProvider ?? null
@@ -37,7 +38,7 @@ if (serviceProviderData !== null) {
     form.email = serviceProviderData.email
     form.phone_number = serviceProviderData.phone_number
     form.description = serviceProviderData.description
-    form.logo = serviceProviderData.logo
+   
     form.address = serviceProviderData.address
     form.status = serviceProviderData.status
     form.user_id = serviceProviderData.user_id
@@ -65,17 +66,17 @@ const update = () => {
 
 <template>
     <AuthenticatedLayout>
-{{ users }}
-        <Head :title="(serviceProviderData !== null) ? 'Edit Services Provider' : 'Create Services Provider'" />
+
+        <Head :title="(serviceProviderData !== null) ? 'Edit Provider' : 'Create Provider'" />
         <!-- Breadcrumb Start -->
-        <BreadcrumbDefault :pageTitle="(serviceProviderData !== null) ? 'Edit Services Provider' : 'Create Services Provider'" />
+        <BreadcrumbDefault :pageTitle="(serviceProviderData !== null) ? 'Edit Provider' : 'Create Provider'" />
         <!-- Breadcrumb End -->
-        <DefaultCard :cardTitle="(serviceProviderData !== null) ? 'Edit Services Provider' : 'Create Services Provider'">
+        <DefaultCard :cardTitle="(serviceProviderData !== null) ? 'Edit Provider' : 'Create Provider'">
             <form @submit.prevent="submit">
 
                 <SelectGroup label="Users" :options="users" v-model="form.user_id"/>
                 <InputError class="mt-2" :message="form.errors.user_id" />
-                {{ form.company_name }}
+                
                 <InputGroup label="Company Name" class="mb-2" type="text" id="company_name" placeholder="Enter Company Name"
                     v-model="form.company_name" required autofocus autocomplete="company_name">
                 </InputGroup>
@@ -101,11 +102,11 @@ const update = () => {
                 </InputGroup>
                 <InputError class="mt-2" :message="form.errors.address" />
 
-                <InputGroup label="Logo" class="mb-2" type="file" id="logo" placeholder="Enter logo"
-                    v-model="form.logo" required autofocus autocomplete="logo">
-                </InputGroup>
+                <img v-if="serviceProviderData && serviceProviderData.logo" :src="'http://127.0.0.1:8000/'+ serviceProviderData.logo" alt="">
+               
+                <FormFilePicker label="Upload Logo" color="success" @update:modelValue="form.logo = $event" />
                 <InputError class="mt-2" :message="form.errors.logo" />
-{{ form.status }}
+
                 <SelectGroup label="Status" :options="status" v-model="form.status"/>
                 <InputError class="mt-2" :message="form.errors.status" />
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\ServiceProvider;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 
 class ServicesProvidersController extends Controller
@@ -83,9 +84,12 @@ class ServicesProvidersController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request)
     {
-        
+       
+        $serviceProvider = ServiceProvider::findOrFail($request->id);
+    
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
             'company_name' => 'required|string|max:256',
@@ -93,31 +97,49 @@ class ServicesProvidersController extends Controller
             'phone_number' => 'required|string',
             'description' => 'required|string',
             'address' => 'required|string|max:255',
-            'logo' => 'sometimes|image',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required'
         ]);
-
+    
         if ($request->hasFile('logo')) {
+            // Delete the old logo file if it exists
+            if ($serviceProvider->logo && File::exists(public_path($serviceProvider->logo))) {
+                File::delete(public_path($serviceProvider->logo));
+            }
+    
+            // Upload new logo
             $img = $request->file('logo');
             $t = time();
             $file_name = $img->getClientOriginalName();
             $img_name = "{$t}-{$file_name}";
             $img_url = "uploads/{$img_name}";
             $img->move(public_path('uploads'), $img_name);
+    
             $validated['logo'] = $img_url;
+        }else{
+            $validated['logo'] = $serviceProvider->logo;
         }
-
-        ServiceProvider::find($request->id)->update($validated);
-
+    
+        $serviceProvider->update($validated);
+    
         return redirect()->route('services-provider.index')->with('success', 'Services Provider updated successfully!');
     }
+    
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        ServiceProvider::find($id)->delete();
+        
+
+        $serviceProvider = ServiceProvider::findOrFail($id);
+        if ($serviceProvider->logo && File::exists(public_path($serviceProvider->logo))) {
+            File::delete(public_path($serviceProvider->logo));
+        }
+        $serviceProvider->delete();
         return redirect()->back()->with('success', 'Service Provider deleted successfully!');
     }
+    
 }

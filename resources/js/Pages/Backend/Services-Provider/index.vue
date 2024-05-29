@@ -13,6 +13,14 @@
 
   const form: any = useForm({
     id: 0,
+    'company_name': '',
+    'email': '',
+    'phone_number': '',
+    'description': '',
+    'logo': '',
+    'address': '',
+    'status': '',
+    'user_id': '',
     _method: 'delete'
   })
 
@@ -27,7 +35,7 @@
 
   const deleteRole = async () => {
     isModalDangerActive.value = false
-    form.delete(route('roles.destroy', form.id), {
+    form.delete(route('services-provider.destroy', form.id), {
       onSuccess: () => {
         const index = rows.value.findIndex((role: any) => role.id === form.id)
         if (index !== -1) {
@@ -84,9 +92,9 @@
 <template>
   <AuthenticatedLayout>
 
-    <Head title="Services Provider" />
+    <Head title="Providers" />
     <!-- Breadcrumb Start -->
-    <BreadcrumbDefault pageTitle="Roles" />
+    <BreadcrumbDefault pageTitle="Providers" />
     <!-- Breadcrumb End -->
 
     <div class="flex flex-col gap-10">
