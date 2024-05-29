@@ -1,12 +1,10 @@
 <?php
 
+use Inertia\Inertia;
+use App\Http\Controllers\ServicesProvidersController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
@@ -33,6 +31,9 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
 
+
+    // Services Provider route
+    Route::resource('/services-provider',ServicesProvidersController::class);
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

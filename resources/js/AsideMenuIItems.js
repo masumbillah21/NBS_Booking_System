@@ -37,6 +37,15 @@ export default [
             { label: 'Add New', route: 'users.create', permission: 'user.create' }
           ]
         },
+        {
+          icon: 'fas fa-th-large',
+          label: 'Providers',
+          route: '#',
+          children: [
+            { label: 'Providers', route: '/services-provider' },
+            { label: 'Add New', route: '/services-provider/create' }
+          ]
+        },
       ]
     },
     {
