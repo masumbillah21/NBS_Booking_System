@@ -12,7 +12,7 @@ import SwitchFour from '@/Components/Forms/Switchers/SwitchFour.vue'
 import SwitchOne from '@/Components/Forms/Switchers/SwitchOne.vue'
 import SwitchThree from '@/Components/Forms/Switchers/SwitchThree.vue'
 import SwitchTwo from '@/Components/Forms/Switchers/SwitchTwo.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 
 import { ref } from 'vue'
 import MultiSelect from '@/Components/Forms/MultiSelect.vue'
