@@ -4,15 +4,15 @@ export default [
         {
           icon: 'fas fa-th-large',
           label: 'Dashboard',
-          route: '/dashboard',
+          route: 'dashboard',
         },
         {
           icon: "fas fa-users",
           label: 'Roles',
           route: '#',
           children: [
-            { label: 'Roles', route: '/forms/form-elements' },
-            { label: 'Add New', route: '/forms/form-layout' }
+            { label: 'Roles', route: '#' },
+            { label: 'Add New', route: '#' }
           ]
         },
         {
@@ -20,8 +20,17 @@ export default [
           label: 'Permissions',
           route: '#',
           children: [
-            { label: 'Permissions', route: '/forms/form-elements' },
-            { label: 'Add New', route: '/forms/form-layout' }
+            { label: 'Permissions', route: '#' },
+            { label: 'Add New', route: '#' }
+          ]
+        },
+        {
+          icon: "fas fa-users",
+          label: 'Categories',
+          route: '#',
+          children: [
+            { label: 'Categories', route: 'categories.index' },
+            { label: 'Add New', route: 'categories.create' }
           ]
         },
       ]

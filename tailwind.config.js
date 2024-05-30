@@ -8,6 +8,7 @@ export default {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
+        './resources/js/**/*.js'
     ],
 
     darkMode: 'class',
@@ -26,8 +27,6 @@ export default {
         current: 'currentColor',
         transparent: 'transparent',
         white: '#FFFFFF',
-        black: '#1C2434',
-        red: '#FB5454',
         'black-2': '#010101',
         body: '#64748B',
         bodydark: '#AEB7C0',

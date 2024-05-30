@@ -49,7 +49,10 @@ class ServiceController extends Controller
             'provider_id' => 'required|exists:service_providers,id',
         ]);
 
-        $service = Service::create($request->all());
+        $service = Service::create($request->all());    
+
+        $service->category()->attach($request->category_id);
+
         return redirect()->route('services.index')->with('success', 'Service created successfully.');
     }
 
@@ -90,6 +93,7 @@ class ServiceController extends Controller
 
         $service = Service::findOrFail($id);
         $service->update($request->all());
+        $service->category()->sync($request->category_id);
         return redirect()->route('services.index')->with('success', 'Service updated successfully.');
     }
 
@@ -99,6 +103,7 @@ class ServiceController extends Controller
     public function destroy(Service $service, $id)
     {
         $service = Service::findOrFail($id);
+        $service->category()->detach();
         $service->delete();
         return redirect()->route('services.index')->with('success', 'Service deleted successfully.');
     }

@@ -13,23 +13,19 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('children')->whereNull('parent_id')->get();
+        // $categories = Category::all();
+        $categories = Category::with('children')->get();
         // return response()->json($categories);
-        return Inertia::render('Categories/Index', ['categories' => $categories]);
+        return Inertia::render('Backend/Categories/Index', ['categories' => $categories]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function createOrEdit($id)
+    public function create()
     {
-        $category = $id ? Category::findOrFail($id) : new Category();
-        $categories = Category::all();
-        return Inertia::render('Categories/Form', [
-            'category' => $category,
-            'categories' => $categories,
-            'isEdit' => $id ? true : false
-        ]);
+        $categories = Category::select('id', 'category_name as label')->get();
+        return Inertia::render('Backend/Categories/Edit', ['categories' => $categories]);
     }
 
     /**
@@ -37,13 +33,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
+
         $request->validate([
             'category_name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
             'description' => 'nullable|string',
         ]);
 
-        $category = Category::create($request->all());
+        Category::create($request->all());
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
 
@@ -52,21 +50,20 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return Inertia::render('Backend/Categories/Edit', ['category'=> $category]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
 
-    /*
-    public function edit(Category $category, $id)
+    public function edit($id)
     {
         $category = Category::findOrFail($id);
-        $categories = Category::all();
-        return Inertia::render('Categories/Edit', ['category' => $category, 'categories' => $categories]);
+        $categories = Category::select('id', 'category_name as label')->get();
+        return Inertia::render('Backend/Categories/Edit', ['category' => $category, 'categories' => $categories]);
     }
-    */
+    
 
     /**
      * Update the specified resource in storage.
@@ -87,7 +84,7 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category, $id)
+    public function destroy($id)
     {
         $category = Category::findOrFail($id);
         $category->delete();
