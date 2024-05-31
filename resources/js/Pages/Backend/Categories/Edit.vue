@@ -18,11 +18,6 @@
         parent_id: categoryData.parent_id || null,
         description: categoryData.description || "",
         _method: categoryData.id ? "put" : "post",
-        // id: 0,
-        // category_name: "",
-        // parent_id: "",
-        // description: "",
-        // _method: "post",
     });
 
     const isUpdate = computed(() =>  form.id !== 0);

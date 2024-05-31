@@ -18,7 +18,8 @@ return new class extends Migration
             $table->integer('duration'); // in minutes
             $table->integer('price');
 
-            // $table->foreign('provider_id')->references('id')->on('service_providers')->onDelete('cascade');
+            $table->foreign('provider_id')->references('id')->on('service_providers')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
 
             $table->timestamps();
         });

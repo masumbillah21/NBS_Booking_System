@@ -33,6 +33,15 @@ export default [
             { label: 'Add New', route: 'categories.create' }
           ]
         },
+        {
+          icon: "fas fa-users",
+          label: 'Services',
+          route: '#',
+          children: [
+            { label: 'Services', route: 'services.index' },
+            { label: 'Add New', route: 'services.create' }
+          ]
+        },
       ]
     },
     {

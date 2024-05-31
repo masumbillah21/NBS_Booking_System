@@ -13,9 +13,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        // $categories = Category::all();
         $categories = Category::with('children')->get();
-        // return response()->json($categories);
         return Inertia::render('Backend/Categories/Index', ['categories' => $categories]);
     }
 
@@ -33,8 +31,6 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-
         $request->validate([
             'category_name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
