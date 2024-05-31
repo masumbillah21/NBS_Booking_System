@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('service_providers', function (Blueprint $table) {
+        Schema::create('providers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('company_name');
@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('address');
             $table->string('phone_number');
             $table->string('email')->unique();
-            $table->integer('status')->default(1);
+            $table->integer('status')->default(0);
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('service_providers');
+        Schema::dropIfExists('providers');
     }
 };

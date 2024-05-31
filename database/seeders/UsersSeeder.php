@@ -22,6 +22,7 @@ class UsersSeeder extends Seeder
                 'email' => 'mbillah21@gmail.com',
                 'password' => '12345678',
                 'designation' => 'Software Engineer',
+                'email_verified_at' => now(),
                 'status' => 1,
             ],
             [
@@ -29,6 +30,7 @@ class UsersSeeder extends Seeder
                 'email' => 'mdfarokahmed280@gmail.com',
                 'password' => '12345678',
                 'designation' => 'Software Engineer',
+                'email_verified_at' => now(),
                 'status' => 1,
             ],
             [
@@ -36,19 +38,23 @@ class UsersSeeder extends Seeder
                 'email' => 'devrakib.io@gmail.com',
                 'password' => '12345678',
                 'designation' => 'Software Engineer',
+                'email_verified_at' => now(),
                 'status' => 1,
             ],
             [
                 'name' => 'Tarek H.',
                 'email' => 'tarekhn175@gmail.com',
                 'password' => '12345678',
-                'designation' => 'Software Engineer'
+                'designation' => 'Software Engineer',
+                'email_verified_at' => now(),
+                'status' => 1,
             ],
             [
                 'name' => 'Emon Islam',
                 'email' => 'smemonislam6@gmail.com',
                 'password' => '12345678',
                 'designation' => 'Software Engineer',
+                'email_verified_at' => now(),
                 'status' => 1,
             ]
         ];
@@ -58,7 +64,8 @@ class UsersSeeder extends Seeder
                 'name' => $userData['name'],
                 'email' => $userData['email'],
                 'password' => Hash::make($userData['password']),
-                'designation' => $userData['designation']
+                'designation' => $userData['designation'],
+                'email_verified_at' => $userData['email_verified_at'],
             ]);
             $user->roles()->attach($adminRole);
         }

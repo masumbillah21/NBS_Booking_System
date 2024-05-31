@@ -13,12 +13,21 @@
     const categories: any = usePage().props.categories || [];
 
     const form: any = useForm({
-        id: categoryData.id || 0,
-        category_name: categoryData.category_name || "",
-        parent_id: categoryData.parent_id || null,
-        description: categoryData.description || "",
-        _method: categoryData.id ? "put" : "post",
+        id: '',
+        category_name: '',
+        parent_id: '',
+        description: '',
+        _method: "post",
     });
+
+
+    if (categoryData !== null) {
+        form.id = categoryData.id
+        form.category_name = categoryData.category_name
+        form.parent_id = categoryData.parent_id ?? ''
+        form.description = categoryData.description
+        form._method = 'put'
+    }
 
     const isUpdate = computed(() =>  form.id !== 0);
 

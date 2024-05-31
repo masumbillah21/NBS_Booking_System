@@ -15,7 +15,6 @@ class Service extends Model
         'description',
         'duration',
         'price',
-        'category_id',
         'provider_id',
     ];
 
@@ -26,7 +25,7 @@ class Service extends Model
 
     public function provider()
     {
-        // return $this->belongsTo(ServiceProvider::class);
+        return $this->belongsTo(Provider::class);
     }
 
 }

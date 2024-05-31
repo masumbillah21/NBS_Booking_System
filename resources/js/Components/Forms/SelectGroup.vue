@@ -8,11 +8,11 @@ const changeTextColor = () => {
 }
 
 interface Option {
-  id: string | number;
+  id: string | number ;
   label: string;
 }
 const props = defineProps<{
-  modelValue: string;
+  modelValue: string | number | undefined;
   label: string;
   options: Option[];
 }>();

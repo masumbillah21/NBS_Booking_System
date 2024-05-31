@@ -3,14 +3,13 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ServiceCategoryController;
-use App\Http\Controllers\ServicesProvidersController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ProvidersController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
@@ -41,7 +40,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('services', ServiceController::class);
     // Services Provider route
-    Route::resource('/provider', ServicesProvidersController::class);
+    Route::resource('providers', ProvidersController::class);
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

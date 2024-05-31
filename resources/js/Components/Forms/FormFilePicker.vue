@@ -76,7 +76,8 @@ const upload = (event) => {
 
 <template>
   <img v-if="url" :src="url" alt="" class="mb-2 max-w-52">
-  <div class="flex items-stretch justify-start relative">
+  <div class=" items-stretch justify-start relative mb-3">
+    <p class="w-full mb-2.5 block font-medium text-black dark:text-white">{{ label }}</p>
     <label class="inline-flex">
       <BaseButtonLink
         as="a"
