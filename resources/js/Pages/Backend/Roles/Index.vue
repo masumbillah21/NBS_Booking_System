@@ -46,7 +46,7 @@ import { hasPermission } from '@/utils/hasPermission';
   const params = reactive({
     current_page: 1,
     pagesize: 10,
-    sort_column: 'id',
+    sort_column: 'sl',
     sort_direction: 'asc',
     search: '',
   });

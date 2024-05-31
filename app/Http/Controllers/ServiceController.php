@@ -20,7 +20,7 @@ class ServiceController extends Controller
             abort(403);
         }
         
-        $services = Service::with('category')->get();
+        $services = Service::with('category', 'provider')->get();
         return Inertia::render('Backend/Services/Index', ['services' => $services]);
     }
 
