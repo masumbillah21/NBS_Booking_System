@@ -66,6 +66,22 @@ class PermissionsSeeder extends Seeder
         "name" => "User Delete",
         "permission" => "user.delete"
       ],
+      [
+        "name" => "Setting View",
+        "permission" => "setting.view"
+      ],
+      [
+        "name" => "Setting Create",
+        "permission" => "setting.create"
+      ],
+      [
+        "name" => "Setting Update",
+        "permission" => "setting.update"
+      ],
+      [
+        "name" => "Setting Delete",
+        "permission" => "setting.delete"
+      ],
     ];  
 
     $this->createMenu($menus);
