@@ -9,25 +9,33 @@
     import SelectGroup from '@/Components/Forms/SelectGroup.vue';
 
 
-    const serviceData: any = usePage().props.service || {};
-    const categories: any = usePage().props.categories || [];
-    const providers: any = usePage().props.providers || [];
+    const serviceData: any = usePage().props.service ?? null;
+    const categories: any = usePage().props.categories ?? null;
+    const providers: any = usePage().props.providers ?? null;
 
     const form: any = useForm({
-        id: serviceData.id || 0,
-        service_name: serviceData.service_name || "",
-        description: serviceData.description || "",
-        duration: serviceData.duration || "",
-        price: serviceData.price || "",
-        category_id: serviceData.category ? serviceData.category[0].id : null,
-        provider_id: providers.provider_id || null,
-        _method: serviceData.id ? "put" : "post",
+        id: '',
+        service_name: '',
+        description:  '',
+        duration: '',
+        price: '',
+        category_id: "",
+        provider_id: '',
     });
 
-    const isUpdate = computed(() =>  form.id !== 0);
+
+    if (serviceData !== null) {
+        form.id = serviceData.id 
+        form.service_name = serviceData.service_name
+        form.description = serviceData.description
+        form.duration = serviceData.duration
+        form.price = serviceData.price
+        form.category_id = serviceData.category[0].id
+        form.provider_id = serviceData.provider_id
+    }
 
     const submit = () => {
-        if (isUpdate.value) {
+        if (serviceData !== null) {
             update();
         } else {
             create();
@@ -51,9 +59,9 @@
 
 <template>
      <AuthenticatedLayout>
-        <Head title="Create Services" />
+        <Head :title="(serviceData !== null) ? 'Edit Service' : 'Create Service'" />
         <!-- Breadcrumb Start -->
-        <BreadcrumbDefault pageTitle="Create Services" />
+        <BreadcrumbDefault :pageTitle="(serviceData !== null) ? 'Edit Service' : 'Create Service'" />
         <!-- Breadcrumb End -->
         <DefaultCard cardTitle="Create Service">
             <form @submit.prevent="submit">
@@ -67,12 +75,12 @@
                 </InputGroup>
                 <InputError class="mt-2" :message="form.errors.description" />
 
-                <InputGroup label="Duration of Service" class="mb-2" id="duration" placeholder="Select service duration"
+                <InputGroup type="number" label="Duration of Service" class="mb-2" id="duration" placeholder="Select service duration"
                     v-model="form.duration">
                 </InputGroup>
                 <InputError class="mt-2" :message="form.errors.duration" />
 
-                <InputGroup label="Price of Service" class="mb-2" id="price" placeholder="Select service price"
+                <InputGroup type="number" label="Price of Service" class="mb-2" id="price" placeholder="Select service price"
                     v-model="form.price">
                 </InputGroup>
                 <InputError class="mt-2" :message="form.errors.price" />

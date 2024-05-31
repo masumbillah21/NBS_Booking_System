@@ -9,18 +9,11 @@
 
   import { Head, useForm, usePage } from '@inertiajs/vue3'
 
-  const servicesProvider: any = usePage().props.servicesProvider
+  const providerData: any = usePage().props.providerData
+  const storage = usePage().props.urls
 
   const form: any = useForm({
     id: 0,
-    'company_name': '',
-    'email': '',
-    'phone_number': '',
-    'description': '',
-    'logo': '',
-    'address': '',
-    'status': '',
-    'user_id': '',
     _method: 'delete'
   })
 
@@ -35,7 +28,7 @@
 
   const deleteRole = async () => {
     isModalDangerActive.value = false
-    form.delete(route('services-provider.destroy', form.id), {
+    form.delete(route('providers.destroy', form.id), {
       onSuccess: () => {
         const index = rows.value.findIndex((role: any) => role.id === form.id)
         if (index !== -1) {
@@ -62,14 +55,14 @@
     { title: 'SL', field: 'sl', isUnique: true, type: 'number', width: '40px', hide: false },
     { title: 'Company Name', field: 'company_name', width: '200px', hide: false },
     { title: 'Email', field: 'email', hide: false },
-    { title: 'phone', field: 'phone_number', hide: false },
-    { title: 'logo', field: 'logo', hide: false },
+    { title: 'Phone', field: 'phone_number', hide: false },
+    { title: 'Logo', field: 'logo', hide: false },
     { title: 'Created', field: 'created_at', width: '200px', hide: false },
     { title: 'Updated', field: 'updated_at', width: '200px', hide: false },
     { title: 'Action', field: 'action',width: '200px', hide: false },
   ])
 
-  const rows = ref(servicesProvider.map((provider: any, index: number) => {
+  const rows = ref(providerData.map((provider: any, index: number) => {
     return {
       sl: index + 1,
       id: provider.id,
@@ -83,9 +76,9 @@
   }))
 
   const filteredProvider = computed(() => {
-    if (!params.search) return servicesProvider.slice(0, params.pagesize);
+    if (!params.search) return providerData.slice(0, params.pagesize);
     const query = params.search.toLowerCase();
-    return servicesProvider?.filter((item: any) => item.company_name.toLowerCase().includes(query));
+    return providerData?.filter((item: any) => item.company_name.toLowerCase().includes(query));
   })
 </script>
 
@@ -126,11 +119,11 @@
           :cloneHeaderInFooter="true" skin="bh-table-compact" class="column-filter p-4"
           rowClass="bg-white dark:bg-slate-800 dark:text-slate-300 dark:border-gray-600">
           <template #logo="data">
-                <img :src="data.value.logo" alt="">
+                <img :src="storage.storeUrl + data.value.logo" alt="">
           </template>
           <template #action="data">
             <template class="flex">
-              <BaseButtonLink routeName="services-provider.edit" :routeParams="data.value.id" icon="fas fa-edit" label="Edit"
+              <BaseButtonLink routeName="providers.edit" :routeParams="data.value.id" icon="fas fa-edit" label="Edit"
                 color="info" small />
               <BaseButtonLink class="ml-2" icon="fas fa-trash-alt" label="Delete" color="danger" small
                 @click="showModle(data.value.id)" />
@@ -143,7 +136,7 @@
     <Modal :show="isModalDangerActive" @close="closeModal">
       <div class="p-6">
         <h2 class="text-lg font-medium text-red-900 dark:text-red-100">
-          Are you sure you want to delete this role?
+          Are you sure you want to delete this provider?
         </h2>
         <div class="mt-6 flex justify-end">
           <BaseButtonLink class="ml-2" icon="fas fa-trash-alt" label="Delete" color="danger" small
