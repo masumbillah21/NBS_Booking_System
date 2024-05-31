@@ -44,7 +44,7 @@
   const params = reactive({
     current_page: 1,
     pagesize: 10,
-    sort_column: 'id',
+    sort_column: 'sl',
     sort_direction: 'asc',
     search: '',
   });
@@ -55,8 +55,8 @@
     { title: 'Description', field: 'description', hide: false },
     { title: 'Duration', field: 'duration', width: '200px', hide: false },
     { title: 'Price', field: 'price', width: '200px', hide: false },
-    { title: 'Category', field: 'category_id', width: '200px', hide: false },
-    { title: 'Provider', field: 'provider_id', width: '200px', hide: false },
+    { title: 'Category', field: 'category', width: '200px', hide: false },
+    { title: 'Provider', field: 'provider', width: '200px', hide: false },
     { title: 'Created', field: 'created_at', width: '200px', hide: false },
     { title: 'Updated', field: 'updated_at', width: '200px', hide: false },
     { title: 'Action', field: 'action',width: '200px', hide: false },
@@ -70,8 +70,8 @@
       description: service.description,
       duration: service.duration,
       price: service.price,
-      category_id: service.category.length > 0 ? service.category[0].category_name : 'None',
-      provider_id: service.provider_id,
+      category: service.category.length > 0 ? service.category[0].category_name : 'None',
+      provider: service.provider.company_name,
       created_at: service.created_at,
       updated_at: service.updated_at,
     }
