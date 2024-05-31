@@ -7,7 +7,7 @@ import { usePage } from '@inertiajs/vue3';
 const target = ref(null)
 const dropdownOpen = ref(false)
 
-const user = usePage().props.auth.user;
+const user: any = usePage().props.auth.user;
 
 onClickOutside(target, () => {
   dropdownOpen.value = false
@@ -30,7 +30,7 @@ const logout = () => {
     >
       <span class="hidden text-right lg:block">
         <span class="block text-sm font-medium text-black dark:text-white">{{ user.name }}</span>
-        <span class="block text-xs font-medium">UX Designer</span>
+        <span class="block text-xs font-medium">{{ user.designation }}</span>
       </span>
 
       <span class="h-12 w-12 rounded-full">

@@ -4,6 +4,7 @@ import { useSidebarStore } from '@/stores/sidebar'
 import { Link } from '@inertiajs/vue3';
 import SidebarDropdown from './SidebarDropdown.vue'
 import BaseIcon from '../BaseIcon.vue';
+import { hasPermission } from '@/utils/hasPermission';
 
 const sidebarStore = useSidebarStore()
 
@@ -26,7 +27,7 @@ const handleItemClick = () => {
 </script>
 
 <template>
-  <li>
+  <li v-if="hasPermission(item.permission)">
     <Link
       :href="item.route != '#' ? route(item.route) : item.route"
       class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
