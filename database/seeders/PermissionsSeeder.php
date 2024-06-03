@@ -114,6 +114,22 @@ class PermissionsSeeder extends Seeder
         "name" => "Service Delete",
         "permission" => "service.delete"
       ],
+      [
+        "name" => "Appointment View",
+        "permission" => "appointment.view"
+      ],
+      [
+        "name" => "Appointment Create",
+        "permission" => "appointment.create"
+      ],
+      [
+        "name" => "Appointment Update",
+        "permission" => "appointment.update"
+      ],
+      [
+        "name" => "Appointment Delete",
+        "permission" => "appointment.delete"
+      ],
     ];  
 
     $this->createMenu($menus);
