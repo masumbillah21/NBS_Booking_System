@@ -67,6 +67,16 @@ export default [
             { label: 'Add New', route: 'services.create', permission: 'service.create', }
           ]
         },
+        {
+          icon: "fas fa-suitcase",
+          label: 'Appointment',
+          route: '#',
+          permission: 'appointment.view',
+          children: [
+            { label: 'Appointment', route: 'appointments.index', permission: 'appointment.view', },
+            { label: 'Add New', route: 'appointments.create', permission: 'appointment.create', }
+          ]
+        },
       ]
     },
     {

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Trait\DateTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Service extends Model
 {
@@ -26,6 +27,11 @@ class Service extends Model
     public function provider()
     {
         return $this->belongsTo(Provider::class);
+    }
+
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class);
     }
 
 }

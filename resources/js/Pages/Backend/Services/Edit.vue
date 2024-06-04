@@ -34,6 +34,7 @@
         form.provider_id = serviceData.provider_id
     }
 
+    console.log(serviceData.service_name)
     const submit = () => {
         if (serviceData !== null) {
             update();

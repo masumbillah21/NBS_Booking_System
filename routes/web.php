@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
@@ -39,6 +40,7 @@ Route::middleware(['auth','verified'])->group(function () {
     //Service Management
     Route::resource('categories', CategoryController::class);
     Route::resource('services', ServiceController::class);
+    Route::resource('appointments', AppointmentController::class);
     // Services Provider route
     Route::resource('providers', ProvidersController::class);
 
