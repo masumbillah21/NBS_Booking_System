@@ -50,7 +50,7 @@ watch(() => mode.value, (newValue) => {
             <SwitchThree class="mt-3" v-model="mode" />
             <InputError class="mt-2" :message="form.errors.payment_mode" />
         </div>
-        <template v-if="!form.payment_mode">
+        <template v-if="!mode">
             <div class="mb-4">
                 <InputLabel class="font-medium text-black dark:text-white" for="test-pk" value="Test Public Key" />
                 <TextInput
