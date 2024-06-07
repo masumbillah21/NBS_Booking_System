@@ -43,6 +43,46 @@ export default [
           route: 'settings.index',
           permission: 'setting.view',
         },
+        {
+          icon: 'fas fa-user-friends',
+          label: 'Providers',
+          route: '#',
+          permission: 'provider.view',
+          children: [
+            { label: 'Providers', route: 'providers.index', permission: 'provider.view', },
+            { label: 'Add New', route: 'providers.create', permission: 'provider.create', }
+          ]
+        },
+        {
+          icon: "fas fa-tasks",
+          label: 'Categories',
+          route: '#',
+          permission: 'category.view',
+          children: [
+            { label: 'Categories', route: 'categories.index', permission: 'category.view', },
+            { label: 'Add New', route: 'categories.create', permission: 'category.view', }
+          ]
+        },
+        {
+          icon: "fas fa-suitcase",
+          label: 'Services',
+          route: '#',
+          permission: 'service.view',
+          children: [
+            { label: 'Services', route: 'services.index', permission: 'service.view', },
+            { label: 'Add New', route: 'services.create', permission: 'service.create', }
+          ]
+        },
+        {
+          icon: "fas fa-suitcase",
+          label: 'Appointment',
+          route: '#',
+          permission: 'appointment.view',
+          children: [
+            { label: 'Appointment', route: 'appointments.index', permission: 'appointment.view', },
+            { label: 'Add New', route: 'appointments.create', permission: 'appointment.create', }
+          ]
+        },
       ]
     },
     {

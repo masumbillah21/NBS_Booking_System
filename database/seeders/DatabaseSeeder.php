@@ -17,6 +17,11 @@ class DatabaseSeeder extends Seeder
             PermissionsSeeder::class,
             RolesSeeder::class,
             UsersSeeder::class,
+            ProviderSeeder::class,
+            CategorySeeder::class,
+            ServiceSeeder::class,
+            ServiceCategorySeeder::class,
+            AppointmentSeeder::class
         ]);
     }
 }

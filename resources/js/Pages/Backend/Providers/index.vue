@@ -2,15 +2,15 @@
   import { computed, ref, reactive } from 'vue'
   import BreadcrumbDefault from '@/Components/Breadcrumbs/BreadcrumbDefault.vue'
   import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-  import Vue3Datatable from '@bhplugin/vue3-datatable'
+  import Vue3Datatable from '@bhplugin/vue3-datatable';
   import BaseButtonLink from '@/Components/BaseButtonLink.vue';
   import Modal from '@/Components/Modal.vue';
   import '@bhplugin/vue3-datatable/dist/style.css'
 
   import { Head, useForm, usePage } from '@inertiajs/vue3'
-import { hasPermission } from '@/utils/hasPermission';
 
-  const rolesData: any = usePage().props.rolesData
+  const providerData: any = usePage().props.providerData
+  const storage = usePage().props.urls
 
   const form: any = useForm({
     id: 0,
@@ -28,7 +28,7 @@ import { hasPermission } from '@/utils/hasPermission';
 
   const deleteRole = async () => {
     isModalDangerActive.value = false
-    form.delete(route('roles.destroy', form.id), {
+    form.delete(route('providers.destroy', form.id), {
       onSuccess: () => {
         const index = rows.value.findIndex((role: any) => role.id === form.id)
         if (index !== -1) {
@@ -53,37 +53,41 @@ import { hasPermission } from '@/utils/hasPermission';
 
   const cols = ref([
     { title: 'SL', field: 'sl', isUnique: true, type: 'number', width: '40px', hide: false },
-    { title: 'Name', field: 'name', width: '200px', hide: false },
-    { title: 'Permissions', field: 'permissions', hide: false },
+    { title: 'Company Name', field: 'company_name', width: '200px', hide: false },
+    { title: 'Email', field: 'email', hide: false },
+    { title: 'Phone', field: 'phone_number', hide: false },
+    { title: 'Logo', field: 'logo', hide: false },
     { title: 'Created', field: 'created_at', width: '200px', hide: false },
     { title: 'Updated', field: 'updated_at', width: '200px', hide: false },
     { title: 'Action', field: 'action',width: '200px', hide: false },
   ])
 
-  const rows = ref(rolesData.map((role: any, index: number) => {
+  const rows = ref(providerData.map((provider: any, index: number) => {
     return {
       sl: index + 1,
-      id: role.id,
-      name: role.name,
-      permissions: role.permissions.map((permission: any) => permission.name).join(', '),
-      created_at: role.created_at,
-      updated_at: role.updated_at,
+      id: provider.id,
+      company_name: provider.company_name,
+      email: provider.email,
+      phone_number: provider.phone_number,
+      logo: provider.logo,
+      created_at: provider.created_at,
+      updated_at: provider.updated_at,
     }
   }))
 
-  const filteredRole = computed(() => {
-    if (!params.search) return rolesData.slice(0, params.pagesize);
+  const filteredProvider = computed(() => {
+    if (!params.search) return providerData.slice(0, params.pagesize);
     const query = params.search.toLowerCase();
-    return rolesData?.filter((item: any) => item.name.toLowerCase().includes(query));
+    return providerData?.filter((item: any) => item.company_name.toLowerCase().includes(query));
   })
 </script>
 
 <template>
   <AuthenticatedLayout>
 
-    <Head title="Roles" />
+    <Head title="Providers" />
     <!-- Breadcrumb Start -->
-    <BreadcrumbDefault pageTitle="Roles" />
+    <BreadcrumbDefault pageTitle="Providers" />
     <!-- Breadcrumb End -->
 
     <div class="flex flex-col gap-10">
@@ -111,14 +115,17 @@ import { hasPermission } from '@/utils/hasPermission';
 
         </div>
         <Vue3Datatable :rows="rows" :columns="cols" :sortable="true" :sortColumn="params.sort_column"
-          :sortDirection="params.sort_direction" :search="params.search" :columnFilter="true" @change="filteredRole"
+          :sortDirection="params.sort_direction" :search="params.search" :columnFilter="true" @change="filteredProvider"
           :cloneHeaderInFooter="true" skin="bh-table-compact" class="column-filter p-4"
           rowClass="bg-white dark:bg-slate-800 dark:text-slate-300 dark:border-gray-600">
+          <template #logo="data">
+                <img :src="storage.storeUrl + data.value.logo" alt="">
+          </template>
           <template #action="data">
             <template class="flex">
-              <BaseButtonLink v-if="hasPermission('role.update')" routeName="roles.edit" :routeParams="data.value.id" icon="fas fa-edit" label="Edit"
+              <BaseButtonLink routeName="providers.edit" :routeParams="data.value.id" icon="fas fa-edit" label="Edit"
                 color="info" small />
-              <BaseButtonLink v-if="hasPermission('role.delete')" class="ml-2" icon="fas fa-trash-alt" label="Delete" color="danger" small
+              <BaseButtonLink class="ml-2" icon="fas fa-trash-alt" label="Delete" color="danger" small
                 @click="showModle(data.value.id)" />
             </template>
           </template>
@@ -129,7 +136,7 @@ import { hasPermission } from '@/utils/hasPermission';
     <Modal :show="isModalDangerActive" @close="closeModal">
       <div class="p-6">
         <h2 class="text-lg font-medium text-red-900 dark:text-red-100">
-          Are you sure you want to delete this role?
+          Are you sure you want to delete this provider?
         </h2>
         <div class="mt-6 flex justify-end">
           <BaseButtonLink class="ml-2" icon="fas fa-trash-alt" label="Delete" color="danger" small

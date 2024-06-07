@@ -8,7 +8,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProvidersController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
@@ -36,8 +40,15 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('settings', SettingController::class);
 
+    //Service Management
+    Route::resource('categories', CategoryController::class);
+    Route::resource('services', ServiceController::class);
+    Route::resource('appointments', AppointmentController::class);
+    // Services Provider route
+    Route::resource('providers', ProvidersController::class);
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
+
 
 require __DIR__.'/auth.php';

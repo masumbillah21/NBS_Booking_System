@@ -81,6 +81,69 @@ class PermissionsSeeder extends Seeder
       [
         "name" => "Setting Delete",
         "permission" => "setting.delete"
+      ]
+        "name" => "Provider View",
+        "permission" => "provider.view"
+      ],
+      [
+        "name" => "Provider Create",
+        "permission" => "provider.create"
+      ],
+      [
+        "name" => "Provider Update",
+        "permission" => "provider.update"
+      ],
+      [
+        "name" => "Provider Delete",
+        "permission" => "provider.delete"
+      ],
+      [
+        "name" => "Category View",
+        "permission" => "category.view"
+      ],
+      [
+        "name" => "Category Create",
+        "permission" => "category.create"
+      ],
+      [
+        "name" => "Category Update",
+        "permission" => "category.update"
+      ],
+      [
+        "name" => "Category Delete",
+        "permission" => "category.delete"
+      ],
+      [
+        "name" => "Service View",
+        "permission" => "service.view"
+      ],
+      [
+        "name" => "Service Create",
+        "permission" => "service.create"
+      ],
+      [
+        "name" => "Service Update",
+        "permission" => "service.update"
+      ],
+      [
+        "name" => "Service Delete",
+        "permission" => "service.delete"
+      ],
+      [
+        "name" => "Appointment View",
+        "permission" => "appointment.view"
+      ],
+      [
+        "name" => "Appointment Create",
+        "permission" => "appointment.create"
+      ],
+      [
+        "name" => "Appointment Update",
+        "permission" => "appointment.update"
+      ],
+      [
+        "name" => "Appointment Delete",
+        "permission" => "appointment.delete"
       ],
     ];  
 

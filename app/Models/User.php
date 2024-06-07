@@ -5,6 +5,7 @@ namespace App\Models;
  use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Role;
 use App\Trait\DateTrait;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -57,6 +58,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function profile(){
         return $this->hasOne(Profile::class);
+    }
+  
+    public function appointmentClient(): BelongsTo
+    {
+        return $this->belongsTo(Appointment::class, 'client_id');
+    }
+
+    public function appointmentStaff(): BelongsTo
+    {
+        return $this->belongsTo(Appointment::class, 'staff_id');
     }
 
     public function hasPermission($permission)
