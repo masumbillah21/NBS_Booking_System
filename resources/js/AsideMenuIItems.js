@@ -38,6 +38,12 @@ export default [
           ]
         },
         {
+          icon: "fas fa-cogs",
+          label: 'Settings',
+          route: 'settings.index',
+          permission: 'setting.view',
+        },
+        {
           icon: 'fas fa-user-friends',
           label: 'Providers',
           route: '#',

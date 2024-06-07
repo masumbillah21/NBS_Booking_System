@@ -8,6 +8,8 @@ const target = ref(null)
 const dropdownOpen = ref(false)
 
 const user: any = usePage().props.auth.user;
+const profile: any = usePage().props.auth.profile;
+const storeUrl = usePage().props.urls.storeUrl
 
 onClickOutside(target, () => {
   dropdownOpen.value = false
@@ -34,7 +36,8 @@ const logout = () => {
       </span>
 
       <span class="h-12 w-12 rounded-full">
-        <img src="@/assets/images/user/user-01.png" alt="User" />
+        <img v-if="profile && profile.photo" :src="storeUrl + profile.photo" alt="User" class="rounded-full" />
+        <img v-else src="@/assets/images/user/user-01.png" alt="User" />
       </span>
 
       <svg
