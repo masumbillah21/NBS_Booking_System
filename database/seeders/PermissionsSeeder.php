@@ -81,7 +81,8 @@ class PermissionsSeeder extends Seeder
       [
         "name" => "Setting Delete",
         "permission" => "setting.delete"
-      ]
+      ],
+      [
         "name" => "Provider View",
         "permission" => "provider.view"
       ],
