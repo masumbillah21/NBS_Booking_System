@@ -22,9 +22,9 @@ class CustomerController extends Controller
     public function index()
     {
         $user = Auth::user();
-        // if (!Auth::user()->hasPermission('customer.view')) {
-        //     abort(403);
-        // }
+        if (!Auth::user()->hasPermission('customer.view')) {
+            abort(403);
+        }
         
         $appointments = Appointment::where('client_id',$user->id)->with('client', 'staff', 'service')->get();
         return inertia()->render('Backend/Customer/Index',[ 'customerAppointments' => $appointments]);
@@ -32,9 +32,9 @@ class CustomerController extends Controller
 
     public function edit($id)
     {
-        // if (!Auth::user()->hasPermission('customer.create')) {
-        //     abort(403);
-        // }
+        if (!Auth::user()->hasPermission('customer.edit')) {
+            abort(403);
+        }
 
         $customerAppointment = Appointment::findOrFail($id);
         $services = Service::select('id', 'service_name as label')->get();
@@ -52,35 +52,43 @@ class CustomerController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Appointment $appointment)
-{
-    // Validate the request data
-    $validated = $request->validate([
-        'client_id' => 'nullable|integer',
-        'staff_id' => 'nullable|integer',
-        'service_id' => 'nullable|integer',
-        'appointment_date' => 'nullable|date',
-        'appointment_time' => 'nullable|date_format:H:i',
-    ]);
+    {
 
-    // Check for conflicts
-    $conflictingAppointment = Appointment::where('staff_id', $validated['staff_id'])
-        ->where('appointment_date', $validated['appointment_date'])
-        ->where('appointment_time', $validated['appointment_time'])
-        ->where('id', '!=', $appointment->id) // Exclude the current appointment from the check
-        ->first();
+        if (!Auth::user()->hasPermission('customer.edit')) {
+            abort(403);
+        }
+        // Validate the request data
+        $validated = $request->validate([
+            'client_id' => 'nullable|integer',
+            'staff_id' => 'nullable|integer',
+            'service_id' => 'nullable|integer',
+            'appointment_date' => 'nullable|date',
+            'appointment_time' => 'nullable|date_format:H:i',
+        ]);
 
-    if ($conflictingAppointment) {
-        return redirect()->back()->with('error', 'This staff member already has an appointment at the selected date and time.');
+        // Check for conflicts
+        $conflictingAppointment = Appointment::where('staff_id', $validated['staff_id'])
+            ->where('appointment_date', $validated['appointment_date'])
+            ->where('appointment_time', $validated['appointment_time'])
+            ->where('id', '!=', $appointment->id) // Exclude the current appointment from the check
+            ->first();
+
+        if ($conflictingAppointment) {
+            return redirect()->back()->with('error', 'This staff member already has an appointment at the selected date and time.');
+        }
+
+        // Update the appointment
+        $appointment->update($validated);
+        return redirect()->route('customer.index')->with('success', 'Appointment updated successfully.');
     }
-
-    // Update the appointment
-    $appointment->update($validated);
-    return redirect()->route('customer.index')->with('success', 'Appointment updated successfully.');
-}
 
 
     public function cancel($id)
     {
+        if (!Auth::user()->hasPermission('customer.cancel')) {
+            abort(403);
+        }
+
         $appointment = Appointment::find($id);
 
         $appointmentTime = Carbon::parse($appointment->appointment_time);
@@ -103,6 +111,10 @@ class CustomerController extends Controller
    // In your controller (e.g., CustomerController)
    public function reappointmentCreate($id)
    {
+
+        if (!Auth::user()->hasPermission('customer.reappointment')) {
+            abort(403);
+        }
        // Get appointment details and related services, users, and statuses
        $appointment = Appointment::findOrFail($id);
        $services = Service::select('id', 'service_name as label')->get();
@@ -119,6 +131,10 @@ class CustomerController extends Controller
    
    public function reappointment(Request $request)
    {
+
+        if (!Auth::user()->hasPermission('customer.reappointment')) {
+            abort(403);
+        }
        // Find the original appointment by ID
        $appointment = Appointment::findOrFail($request->id);
    
@@ -163,12 +179,20 @@ class CustomerController extends Controller
      */
     public function createFeedback($id)
     {
+
+        if (!Auth::user()->hasPermission('customer.feedback')) {
+            abort(403);
+        }
+
         $customerFeedback = Appointment::findOrFail($id);
         return inertia('Backend/Customer/FeedbackCreate', compact('customerFeedback'));
     }
 
     public function storeFeedback(Request $request)
     {
+        if (!Auth::user()->hasPermission('customer.feedback')) {
+            abort(403);
+        }
         $validated = $request->validate([
             'appointment_id' => 'required|exists:appointments,id',
             'rating' => 'required|integer|min:1|max:5',

@@ -7,6 +7,7 @@ import Vue3Datatable from '@bhplugin/vue3-datatable'
 import Modal from '@/Components/Modal.vue';
 import '@bhplugin/vue3-datatable/dist/style.css'
 import BaseButtonLink from '@/Components/BaseButtonLink.vue';
+import { hasPermission } from '@/utils/hasPermission';
 
 const appointmentData: any = usePage().props.customerAppointments
 
@@ -135,15 +136,13 @@ const filteredService = computed(() => {
           rowClass="bg-white dark:bg-slate-800 dark:text-slate-300 dark:border-gray-600">
           <template #action="data">
             <template class="flex">
-              <BaseButtonLink  v-if="data.value.status !== 'canceled' && data.value.status !== 'completed'" routeName="customer.edit" :routeParams="data.value.id" icon="fas fa-edit" label="Edit"
+              <BaseButtonLink  v-if="data.value.status !== 'canceled' && data.value.status !== 'completed' && hasPermission('customer.edit')" routeName="customer.edit" :routeParams="data.value.id" icon="fas fa-edit" label="Edit"
                 color="info" small class="ml-2" />
-                <BaseButtonLink  v-if="data.value.status === 'completed'" routeName="feedback.create" :routeParams="data.value.id" icon="fas fa-edit" label="Feedback Create"
+                <BaseButtonLink  v-if="data.value.status === 'completed' && hasPermission('customer.feedback')" routeName="feedback.create" :routeParams="data.value.id" icon="fas fa-edit" label="Feedback Create"
                 color="info" small class="ml-2" />
-                <BaseButtonLink  v-if="data.value.status === 'completed' || data.value.status === 'canceled'" routeName="customer.reappointment.create" :routeParams="data.value.id" icon="fas fa-redo" label="Reappointment Create"
+                <BaseButtonLink  v-if="(data.value.status === 'completed' || data.value.status === 'canceled') && hasPermission('customer.reappointment')" routeName="customer.reappointment.create" :routeParams="data.value.id" icon="fas fa-redo" label="Reappointment Create"
                 color="success" small class="ml-2" />
-              <BaseButtonLink v-if="data.value.status !== 'completed' && data.value.status !=='canceled'" class="ml-2" icon="fas fa-times" label="Cancel" color="warning" small
-                @click="showModal(data.value.id, 'cancel')" />
-                <BaseButtonLink v-if="data.value.status !== 'completed' && data.value.status !=='canceled'" class="ml-2" icon="fas fa-times" label="Cancel" color="warning" small
+              <BaseButtonLink v-if="data.value.status !== 'completed' && data.value.status !=='canceled' && hasPermission('customer.cancel')" class="ml-2" icon="fas fa-times" label="Cancel" color="warning" small
                 @click="showModal(data.value.id, 'cancel')" />
              
             </template>
