@@ -39,7 +39,7 @@ export default [
         },
         {
           icon: "fas fa-cogs",
-          label: 'Setings',
+          label: 'Settings',
           route: 'settings.index',
           permission: 'setting.view',
         },

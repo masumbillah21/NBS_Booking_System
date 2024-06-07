@@ -11,7 +11,8 @@ class Setting extends Model
 
     protected $fillable = [
         'name',
-        'value'
+        'value',
+        'tab_name',
     ];
     
 }
