@@ -3,10 +3,11 @@
 namespace App\Http\Middleware;
 
 use App\Models\Role;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\Setting;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -48,6 +49,7 @@ class HandleInertiaRequests extends Middleware
             'urls' => [
                 'storeUrl' => config('app.url') . '/storage/',
             ],
+            'settings' => Setting::select('name', 'value')->where('tab_name', 'general')->get(),
         ];
     }
     private function getUserPermissions(Request $request)
