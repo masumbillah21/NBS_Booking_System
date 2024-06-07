@@ -39,6 +39,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+                'profile' => $request->user() ? $request->user()->profile : null,
                 'role' => $request->user() ? $request->user()->roles()->first() : null,
                 'permissions' => $request->user() ? $permissions : [],
             ],

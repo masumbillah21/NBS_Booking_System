@@ -55,9 +55,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Role::class, 'user_role');
     }
 
+    public function profile(){
+        return $this->hasOne(Profile::class);
+    }
+
     public function hasPermission($permission)
     {
-
         return $this->roles->flatMap(function ($role) use ($permission) {
             return $role->permissions->pluck('permission');
         })->contains($permission);
