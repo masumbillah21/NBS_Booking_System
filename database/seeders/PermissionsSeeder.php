@@ -152,11 +152,11 @@ class PermissionsSeeder extends Seeder
       ],
       [
         "name" => "Customer Edit",
-        "permission" => "customer.Edit"
+        "permission" => "customer.edit"
       ],
       [
         "name" => "Customer Feedback",
-        "permission" => "customer.Feedback"
+        "permission" => "customer.feedback"
       ],
       [
         "name" => "Customer Reappointment",
