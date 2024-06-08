@@ -16,8 +16,8 @@ const form: any = useForm({
     tab_name: 'general',
     site_title: '',
     stie_tagline: '',
-    dark_dark_logo: '',
-    light_dark_logo: '',
+    dark_logo: '',
+    light_logo: '',
     site_favicon: '',
     default_role: '',
     date_format: 'dd-mm-yyyy',
@@ -83,8 +83,8 @@ const save = () => {
             <InputLabel class="font-medium text-black dark:text-white" for="dark-logo" value="Dark Logo" />
             <img v-if="dark_logo" :src="urls.storeUrl + dark_logo" alt="" width="250">
             
-            <FormFilePicker label="Upload Dark Logo" v-model="form.dark_dark_logo"/>
-            <InputError class="mt-2" :message="form.errors.dark_dark_logo" />
+            <FormFilePicker label="Upload Dark Logo" v-model="form.dark_logo"/>
+            <InputError class="mt-2" :message="form.errors.dark_logo" />
         </div>
         <div class="mb-4">
             <InputLabel class="font-medium text-black dark:text-white" for="light-logo" value="Light Logo" />
