@@ -13,6 +13,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProvidersController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ReportController;
 
 Route::get('/', function () {
     return Inertia::render('Frontend/Welcome', [
@@ -43,6 +44,8 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('appointments', AppointmentController::class);
     // Services Provider route
     Route::resource('providers', ProvidersController::class);
+    //Reports
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
