@@ -1,14 +1,14 @@
 <script setup lang="ts">
-  import { computed, ref, reactive, watchEffect } from 'vue'
+  import { computed, ref, reactive } from 'vue'
   import BreadcrumbDefault from '@/Components/Breadcrumbs/BreadcrumbDefault.vue'
   import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
   import Vue3Datatable from '@bhplugin/vue3-datatable'
   import '@bhplugin/vue3-datatable/dist/style.css'
-  import { Head, router, usePage } from '@inertiajs/vue3'
+  import { Head, useForm, usePage } from '@inertiajs/vue3'
 
 
-  const appointmentData: any = usePage().props.appointments
-  
+  let appointmentData: any = usePage().props.appointments
+  const filterItems: any = usePage().props.filterItems
 
   const isOpen = ref(false);
 
@@ -20,29 +20,11 @@
     search: '',
   });
 
-  const filters = reactive({
-    timeFrame: appointmentData.timeFrame || 'today',
-    status: appointmentData.status || 'all'
-  });
+  const form = useForm({
+    timeFrame: filterItems.timeFrame || 'today',
+    status: filterItems.status || 'all'
+  })
 
-  const fetchReports = computed(() => {
-    if (filters.timeFrame.length === 0 && filters.status.length === 0) {
-      return appointmentData;
-    }
-
-
-
-    return appointmentData.filter((appointment: {
-      timeFrame: string,
-      status: never,
-    }) => {
-      const appointmentStatus = filters.status.length === 0 || filters.status == appointment.status;
-      const appointmentTimeFrame = filters.timeFrame.length === 0 || filters.timeFrame == appointment.timeFrame;
-      
-
-      return appointmentStatus && appointmentTimeFrame;
-    });
-  });
 
   const cols = ref([
     { title: 'SL', field: 'sl', isUnique: true, type: 'number', width: '40px', hide: false },
@@ -66,19 +48,43 @@
     }
   }))
 
+  const fetchReports = () => {
+    form.get(route('reports.appointments'), {
+      onSuccess: (page: any) => {
+        appointmentData = page.props.appointments
+        rows.value = appointmentData.map((appointment: any, index: number) => {
+          return {
+            sl: index + 1,
+            service_name: appointment.service.service_name,
+            client_name: appointment.client.name,
+            staff_name: appointment.staff.name,
+            appointment_date: appointment.appointment_date,
+            appointment_time: appointment.appointment_time,
+            status: appointment.status,
+          }
+        })
+      }
+    })
+
+    appointmentData = usePage().props.appointments
+    rows.value = appointmentData.map((appointment: any, index: number) => {
+      return {
+        sl: index + 1,
+        service_name: appointment.service.service_name,
+        client_name: appointment.client.name,
+        staff_name: appointment.staff.name,
+        appointment_date: appointment.appointment_date,
+        appointment_time: appointment.appointment_time,
+        status: appointment.status,
+      }
+    })
+  }
+
   const filteredService = computed(() => {
     if (!params.search) return appointmentData.slice(0, params.pagesize);
     const query = params.search.toLowerCase();
     return appointmentData?.filter((item: any) => item.service.service_name.toLowerCase().includes(query) || item.status == filters.status);
   })
-  
-  // watchEffect(() => {
-  //   fetchReports();
-  // })
-  const exportReport = () => {
-  // Handle export functionality
-  };
-
 </script>
 
 <template>
@@ -87,8 +93,6 @@
   <!-- Breadcrumb Start -->
   <BreadcrumbDefault pageTitle="Appointments Reports" />
   <!-- Breadcrumb End -->
-    {{ appointmentData }}
-    {{ fetchReports }}
   <div class="flex flex-col gap-10">
     <div class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div class="flex justify-between px-3 pt-4 items-center">
@@ -108,13 +112,13 @@
         <!-- Filter Dropdown Start -->
         <div class="flex justify-between items-center gap-4">
         <div class="flex gap-4">
-          <select v-model="filters.timeFrame" >
+          <select v-model="form.timeFrame" @change="fetchReports">
             <option value="today">Today</option>
             <option value="week">This Week</option>
             <option value="month">This Month</option>
             <option value="year">This Year</option>
           </select>
-          <select v-model="filters.status">
+          <select v-model="form.status" @change="fetchReports">
             <option value="all">All Statuses</option>
             <option value="pending">Pending</option>
             <option value="confirmed">Confirmed</option>
@@ -122,7 +126,7 @@
             <option value="canceled">Canceled</option>
           </select>
         </div>
-        <button class="bg-slate-800 text-white p-2 inline-block rounded hover:bg-slate-700" @click="exportReport">Export Report</button>
+        <button class="bg-slate-800 text-white p-2 inline-block rounded hover:bg-slate-700" >Export Report</button>
       </div>
         <input type="text" placeholder="Search"
           class="rounded-lg border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"

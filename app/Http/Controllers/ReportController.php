@@ -8,11 +8,10 @@ use Inertia\Inertia;
 
 class ReportController extends Controller
 {
-    public function index(Request $request)
+    public function appointments(Request $request)
     {
         $timeFrame = $request->input('timeFrame', 'today');
         $status = $request->input('status', 'all');
-
 
          $query = Appointment::query();
          
@@ -20,9 +19,10 @@ class ReportController extends Controller
             $query->where('status', $status);
          }
  
-         if ($timeFrame == 'today') {
+        if ($timeFrame == 'today') {
             $query->whereDate('appointment_date', now()->toDateString());
-        } elseif ($timeFrame == 'week') {
+        }
+        elseif ($timeFrame == 'week') {
             $query->whereBetween('appointment_date', [now()->startOfWeek(), now()->endOfWeek()]);
         } elseif ($timeFrame == 'month') {
             $query->whereMonth('appointment_date', now()->month);
@@ -31,12 +31,12 @@ class ReportController extends Controller
         }
  
          $appointments = $query->with(['service', 'client', 'staff'])->get();
- 
-         return Inertia::render('Backend/Reports/Index', [
+
+         return Inertia::render('Backend/Reports/Appointments', [
              'appointments' => $appointments,
-             'filters' => [
+             'filterItems' => [
                  'timeFrame' => $timeFrame,
-                 'status' => $status,
+                 'status' => $status
              ]
          ]);
      }

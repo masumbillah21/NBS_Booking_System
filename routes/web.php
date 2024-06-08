@@ -45,7 +45,7 @@ Route::middleware(['auth','verified'])->group(function () {
     // Services Provider route
     Route::resource('providers', ProvidersController::class);
     //Reports
-    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/appointments', [ReportController::class, 'appointments'])->name('reports.appointments');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

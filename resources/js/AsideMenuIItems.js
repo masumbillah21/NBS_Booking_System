@@ -81,9 +81,9 @@ export default [
           icon: "fas fa-file-contract",
           label: 'Report',
           route: '#',
-          permission: 'report.view',
+          permission: 'appointment.report.view',
           children: [
-            { label: 'Appointment Report', route: 'reports.index', permission: 'report.view', },
+            { label: 'Appointment Report', route: 'reports.appointments', permission: 'appointment.report.view', },
             
           ]
         },
