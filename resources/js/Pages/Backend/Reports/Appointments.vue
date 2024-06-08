@@ -32,7 +32,7 @@
     { title: 'Client Name', field: 'client_name', width: '200px', hide: false },
     { title: 'Staff Name', field: 'staff_name', width: '200px', hide: false },
     { title: 'Appoinment Date', field: 'appointment_date', hide: false },
-    { title: 'Appoinment Time', field: 'appointment_time', width: '200px', hide: false },
+    { title: 'Service Price', field: 'price', width: '200px', hide: false },
     { title: 'Status', field: 'status', width: '200px', hide: false },
   ])
 
@@ -43,7 +43,7 @@
       client_name: appointment.client.name,
       staff_name: appointment.staff.name,
       appointment_date: appointment.appointment_date,
-      appointment_time: appointment.appointment_time,
+      price: appointment.service.price,
       status: appointment.status,
     }
   }))
