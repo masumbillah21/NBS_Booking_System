@@ -147,6 +147,10 @@ class PermissionsSeeder extends Seeder
         "permission" => "appointment.delete"
       ],
       [
+        "name" => "Appointment Report View",
+        "permission" => "appointment.report.view"
+      ],
+      [
         "name" => "Customer View",
         "permission" => "customer.view"
       ],

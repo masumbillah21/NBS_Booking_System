@@ -14,6 +14,7 @@ use App\Http\Controllers\ProvidersController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CustomerController;
 
 Route::get('/', function () {
@@ -49,6 +50,8 @@ Route::middleware(['auth','verified'])->group(function () {
 
     // Services Provider route
     Route::resource('providers', ProvidersController::class);
+    //Reports
+    Route::get('/reports/appointments', [ReportController::class, 'appointments'])->name('reports.appointments');
 
     // Appointment for Customer
     Route::resource('customer',CustomerController::class);

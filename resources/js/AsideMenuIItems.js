@@ -58,7 +58,7 @@ export default [
           ]
         },
         {
-          icon: "fas fa-suitcase",
+          icon: "fas fa-cog",
           label: 'Services',
           route: '#',
           permission: 'service.view',
@@ -76,6 +76,15 @@ export default [
             { label: 'Appointment', route: 'appointments.index', permission: 'appointment.view', },
             { label: 'Add New', route: 'appointments.create', permission: 'appointment.create', }
           ]
+        },
+        {
+          icon: "fas fa-file-contract",
+          label: 'Report',
+          route: '#',
+          permission: 'appointment.report.view',
+          children: [
+            { label: 'Appointment Report', route: 'reports.appointments', permission: 'appointment.report.view', },
+          ],
         },
         {
           icon: "fas fa-suitcase",
