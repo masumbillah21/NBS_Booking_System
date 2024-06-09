@@ -11,6 +11,7 @@ use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
@@ -21,12 +22,15 @@ class CustomerController extends Controller
      */
     public function index()
     {
+        
         $user = Auth::user();
+        // dd(Appointment::get());
         // if (!Auth::user()->hasPermission('customer.view')) {
         //     abort(403);
         // }
         
         $appointments = Appointment::where('client_id',$user->id)->with('client', 'staff', 'service')->get();
+        //dd($appointments);
         return inertia()->render('Backend/Customer/Index',[ 'customerAppointments' => $appointments]);
     }
 
@@ -51,7 +55,34 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Appointment $appointment)
+//     public function update(Request $request, Appointment $appointment)
+// {
+//     // Validate the request data
+//     $validated = $request->validate([
+//         'client_id' => 'nullable|integer',
+//         'staff_id' => 'nullable|integer',
+//         'service_id' => 'nullable|integer',
+//         'appointment_date' => 'nullable|date',
+//         'appointment_time' => 'nullable',
+//     ]);
+
+//     // Check for conflicts
+//     // $conflictingAppointment = Appointment::where('staff_id', $validated['staff_id'])
+//     //     ->where('appointment_date', $validated['appointment_date'])
+//     //     ->where('appointment_time', $validated['appointment_time'])
+//     //     ->where('id', '!=', $appointment->id) // Exclude the current appointment from the check
+//     //     ->first();
+
+//     // if ($conflictingAppointment) {
+//     //     return redirect()->back()->with('error', 'This staff member already has an appointment at the selected date and time.');
+//     // }
+
+//     // Update the appointment
+//     $appointment->update($validated);
+//     return redirect()->route('customer.index')->with('success', 'Appointment updated successfully.');
+// }
+
+public function update(Request $request, Appointment $appointment)
 {
     // Validate the request data
     $validated = $request->validate([
@@ -59,24 +90,22 @@ class CustomerController extends Controller
         'staff_id' => 'nullable|integer',
         'service_id' => 'nullable|integer',
         'appointment_date' => 'nullable|date',
-        'appointment_time' => 'nullable|date_format:H:i',
+        'appointment_time' => 'nullable',
     ]);
 
-    // Check for conflicts
-    $conflictingAppointment = Appointment::where('staff_id', $validated['staff_id'])
-        ->where('appointment_date', $validated['appointment_date'])
-        ->where('appointment_time', $validated['appointment_time'])
-        ->where('id', '!=', $appointment->id) // Exclude the current appointment from the check
-        ->first();
+    // Debugging
+    Log::info('Validated Data', $validated);
 
-    if ($conflictingAppointment) {
-        return redirect()->back()->with('error', 'This staff member already has an appointment at the selected date and time.');
+    try {
+        // Update the appointment
+        $appointment->update($validated);
+        return redirect()->route('customer.index')->with('success', 'Appointment updated successfully.');
+    } catch (\Exception $e) {
+        Log::error('Failed to update appointment', ['error' => $e->getMessage()]);
+        return redirect()->back()->with('error', 'Failed to update appointment. Please try again.');
     }
-
-    // Update the appointment
-    $appointment->update($validated);
-    return redirect()->route('customer.index')->with('success', 'Appointment updated successfully.');
 }
+
 
 
     public function cancel($id)
@@ -117,50 +146,86 @@ class CustomerController extends Controller
        return Inertia::render('Backend/Customer/Reappointment', compact('appointment', 'services', 'users', 'status'));
    }
    
-   public function reappointment(Request $request)
-   {
-       // Find the original appointment by ID
-       $appointment = Appointment::findOrFail($request->id);
+//    public function reappointment(Request $request)
+//    {
+//        // Find the original appointment by ID
+//        $appointment = Appointment::findOrFail($request->id);
    
-       // Check if the status allows reappointment
-       if ($appointment->status === 'canceled' || $appointment->status === 'completed') {
+//        // Check if the status allows reappointment
+//        if ($appointment->status === 'canceled' || $appointment->status === 'completed') {
    
-           // Validate the request data
-           $validated = $request->validate([
-               'client_id' => 'required|integer',
-               'staff_id' => 'required|integer',
-               'service_id' => 'required|integer',
-               'appointment_date' => 'required|date',
-               'appointment_time' => 'required|date_format:H:i',
-               'status' => ['required', Rule::in(['pending'])], 
-           ]);
+//            // Validate the request data
+//            $validated = $request->validate([
+//                'client_id' => 'required|integer',
+//                'staff_id' => 'required|integer',
+//                'service_id' => 'required|integer',
+//                'appointment_date' => 'required|date',
+//                'appointment_time' => 'required|date_format:H:i',
+//                'status' => ['required', Rule::in(['pending'])], 
+//            ]);
    
-           // Check if there's an existing appointment at the same date and time for the selected staff member
-           $existingAppointment = Appointment::where('staff_id', $validated['staff_id'])
-               ->where('appointment_date', $validated['appointment_date'])
-               ->where('appointment_time', $validated['appointment_time'])
-               ->first();
+//            // Check if there's an existing appointment at the same date and time for the selected staff member
+//            $existingAppointment = Appointment::where('staff_id', $validated['staff_id'])
+//                ->where('appointment_date', $validated['appointment_date'])
+//                ->where('appointment_time', $validated['appointment_time'])
+//                ->first();
    
-           if ($existingAppointment) {
-               // If an appointment already exists at this time, return with an error
-               return redirect()->back()->with('error', 'This staff member already has an appointment at the selected date and time.');
-           }
+//            if ($existingAppointment) {
+//                // If an appointment already exists at this time, return with an error
+//                return redirect()->back()->with('error', 'This staff member already has an appointment at the selected date and time.');
+//            }
    
-           // Create a new appointment with the validated data
-           $newAppointment = Appointment::create($validated);
+//            // Create a new appointment with the validated data
+//            $newAppointment = Appointment::create($validated);
    
-           // Redirect to the customer index with a success message
-           return redirect()->route('customer.index')->with('success', 'Appointment re-appointed successfully.');
-       }
+//            // Redirect to the customer index with a success message
+//            return redirect()->route('customer.index')->with('success', 'Appointment re-appointed successfully.');
+//        }
    
 
-       return redirect()->route('customer.index')->with('error', 'Appointment cannot be re-appointed.');
-   }
+//        return redirect()->route('customer.index')->with('error', 'Appointment cannot be re-appointed.');
+//    }
 
 
      /**
      * Show the form for creating a new resource.
      */
+
+
+     public function reappointment(Request $request)
+{
+    // Find the existing appointment by its ID
+    $appointment = Appointment::find($request->id);
+
+    // Check if the appointment status allows reappointment
+    if ($appointment && ($appointment->status === 'canceled' || $appointment->status === 'completed')) {
+        
+        // Validate the incoming request data
+        $validated = $request->validate([
+            'client_id' => 'required|integer',
+            'staff_id' => 'required|integer',
+            'service_id' => 'required|integer',
+            'appointment_date' => 'required|date',
+            'appointment_time' => 'required',
+            'status' => 'in:pending', // Ensure the status is set to 'pending'
+        ]);
+
+        // Set the status to 'pending'
+        $validated['status'] = 'pending';
+
+        // Create a new appointment with the validated data
+        $newAppointment = Appointment::create($validated);
+
+        // Redirect back to the customer index with a success message
+        return redirect()->route('customer.index')->with('success', 'Appointment re-appointed successfully.');
+    }
+
+    // If the appointment cannot be reappointed, redirect with an error message
+    return redirect()->route('customer.index')->with('error', 'Appointment cannot be re-appointed.');
+}
+
+
+
     public function createFeedback($id)
     {
         $customerFeedback = Appointment::findOrFail($id);

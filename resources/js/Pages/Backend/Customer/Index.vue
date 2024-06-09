@@ -8,7 +8,7 @@ import Modal from '@/Components/Modal.vue';
 import '@bhplugin/vue3-datatable/dist/style.css'
 import BaseButtonLink from '@/Components/BaseButtonLink.vue';
 
-const appointmentData: any = usePage().props.customerAppointments
+const customerAppointmentData: any = usePage().props.customerAppointments
 
 const form: any = useForm({
   id: 0,
@@ -81,7 +81,7 @@ const cols = ref([
   { title: 'Action', field: 'action', width: '200px', hide: false },
 ])
 
-const rows = ref(appointmentData.map((customer: any, index: number) => {
+const rows = ref(customerAppointmentData.map((customer: any, index: number) => {
   return {
     sl: index + 1,
     id: customer.id,
@@ -97,9 +97,9 @@ const rows = ref(appointmentData.map((customer: any, index: number) => {
 }))
 
 const filteredService = computed(() => {
-  if (!params.search) return rows.value.slice(0, params.pagesize);
+  if (!params.search) return customerAppointmentData?.slice(0, params.pagesize);
   const query = params.search.toLowerCase();
-  return rows.value.filter((item: any) => item.service_name.toLowerCase().includes(query));
+  return customerAppointmentData?.filter((item: any) => item.service_name.toLowerCase().includes(query));
 })
 </script>
 
@@ -108,6 +108,7 @@ const filteredService = computed(() => {
     <Head title="Customer" />
     <!-- Breadcrumb Start -->
     <BreadcrumbDefault pageTitle="Customer" />
+    {{ customerAppointmentData }}
     <!-- Breadcrumb End -->
     <div class="flex flex-col gap-10">
       <div class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -143,8 +144,7 @@ const filteredService = computed(() => {
                 color="success" small class="ml-2" />
               <BaseButtonLink v-if="data.value.status !== 'completed' && data.value.status !=='canceled'" class="ml-2" icon="fas fa-times" label="Cancel" color="warning" small
                 @click="showModal(data.value.id, 'cancel')" />
-                <BaseButtonLink v-if="data.value.status !== 'completed' && data.value.status !=='canceled'" class="ml-2" icon="fas fa-times" label="Cancel" color="warning" small
-                @click="showModal(data.value.id, 'cancel')" />
+               
              
             </template>
           </template>
