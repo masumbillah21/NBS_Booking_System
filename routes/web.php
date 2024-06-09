@@ -41,6 +41,8 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('appointments', AppointmentController::class);
+    Route::get('/services/by-user/{userId}', [AppointmentController::class, 'getServicesByUser'])->name('services.by.user');
+
     // Services Provider route
     Route::resource('providers', ProvidersController::class);
 
