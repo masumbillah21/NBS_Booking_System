@@ -78,15 +78,6 @@ export default [
           ]
         },
         {
-          icon: "fas fa-file-contract",
-          label: 'Report',
-          route: '#',
-          permission: 'appointment.report.view',
-          children: [
-            { label: 'Appointment Report', route: 'reports.appointments', permission: 'appointment.report.view', },
-          ],
-        },
-        {
           icon: "fas fa-suitcase",
           label: 'Customer',
           route: '#',
@@ -105,6 +96,15 @@ export default [
           label: 'Settings',
           route: 'settings.index',
           permission: 'setting.view',
+        },
+        {
+          icon: "fas fa-file-contract",
+          label: 'Report',
+          route: '#',
+          permission: 'appointment.report.view',
+          children: [
+            { label: 'Appointment Report', route: 'reports.appointments', permission: 'appointment.report.view', },
+          ],
         },
       ]
     }

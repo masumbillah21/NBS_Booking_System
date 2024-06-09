@@ -34,8 +34,8 @@ const menuGroups = ref(AsideMenuIItems)
     <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
       <Link class="inline-flex items-center gap-2.5 text-white text-2xl" href="/">
         <img
-          v-if="getSettings('dark_logo')"
-          :src="urls.storeUrl + getSettings('dark_logo')"
+          v-if="getSettings('light_logo')"
+          :src="urls.storeUrl + getSettings('light_logo')"
           :alt="getSettings('site_title')"
         />
         <span v-else>{{ getSettings('site_title') }}</span>
