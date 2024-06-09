@@ -1,7 +1,25 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { defineProps, defineEmits } from 'vue'
 
-const switcherToggle = ref<boolean>(false)
+const props = defineProps<{
+  modelValue: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: boolean): void
+}>()
+
+const switcherToggle = ref<boolean>(props.modelValue)
+
+watch(() => props.modelValue, (newValue) => {
+  switcherToggle.value = newValue
+})
+
+const toggleSwitch = () => {
+  switcherToggle.value = !switcherToggle.value
+  emit('update:modelValue', switcherToggle.value)
+}
 </script>
 
 <template>
@@ -12,7 +30,8 @@ const switcherToggle = ref<boolean>(false)
           type="checkbox"
           id="toggle4"
           class="sr-only"
-          @change="switcherToggle = !switcherToggle"
+          @change="toggleSwitch"
+          :checked="switcherToggle"
         />
         <div
           :class="switcherToggle && '!bg-primary'"

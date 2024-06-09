@@ -3,11 +3,14 @@ import { useSidebarStore } from '@/stores/sidebar'
 import { onClickOutside } from '@vueuse/core'
 import { ref } from 'vue'
 import SidebarItem from './SidebarItem.vue'
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import AsideMenuIItems from '@/AsideMenuIItems';
 import BaseIcon from '../BaseIcon.vue';
+import { getSettings } from '@/utils/settings';
 
 const target = ref(null)
+
+const urls: any = usePage().props.urls
 
 const sidebarStore = useSidebarStore()
 
@@ -30,7 +33,12 @@ const menuGroups = ref(AsideMenuIItems)
     <!-- SIDEBAR HEADER -->
     <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
       <Link class="inline-flex items-center gap-2.5 text-white text-2xl" href="/">
-        NexusNova
+        <img
+          v-if="getSettings('dark_logo')"
+          :src="urls.storeUrl + getSettings('dark_logo')"
+          :alt="getSettings('site_title')"
+        />
+        <span v-else>{{ getSettings('site_title') }}</span>
       </Link>
 
       <button class="block lg:hidden" @click="sidebarStore.isSidebarOpen = false">
@@ -41,7 +49,7 @@ const menuGroups = ref(AsideMenuIItems)
 
     <div class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
       <!-- Sidebar Menu -->
-      <nav class="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
+      <nav class="mt-3 py-2 px-4 lg:mt-2 lg:px-6">
         <template v-for="menuGroup in menuGroups" :key="menuGroup.name">
           <div>
             <h3 class="mb-4 ml-4 text-sm font-medium text-white">{{ menuGroup.name }}</h3>

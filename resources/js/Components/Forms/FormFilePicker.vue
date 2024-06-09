@@ -76,33 +76,13 @@ const upload = (event) => {
 
 <template>
   <img v-if="url" :src="url" alt="" class="mb-2 max-w-52">
-  <div class=" items-stretch justify-start relative mb-3">
-    <p class="w-full mb-2.5 block font-medium text-black dark:text-white">{{ label }}</p>
-    <label class="inline-flex">
-      <BaseButtonLink
-        as="a"
-        :class="{ 'w-12 h-12': isRoundIcon, 'rounded-r-none': showFilename }"
-        :icon-size="isRoundIcon ? 24 : undefined"
-        :label="isRoundIcon ? null : label"
-        :icon="icon"
-        :color="color"
-        :rounded-full="isRoundIcon"
-      />
+  <div class="flex items-stretch justify-start relative mt-5">
       <input
         ref="root"
         type="file"
-        class="absolute top-0 left-0 w-full h-full opacity-0 outline-none cursor-pointer -z-1"
+        class="cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
         :accept="accept"
         @input="upload"
       />
-    </label>
-    <div
-      v-if="showFilename"
-      class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border-gray-200 dark:border-slate-700 border rounded-r"
-    >
-      <span class="text-ellipsis line-clamp-1">
-        {{ file.name }}
-      </span>
-    </div>
   </div>
 </template>

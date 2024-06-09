@@ -84,7 +84,15 @@ export default [
           permission: 'appointment.report.view',
           children: [
             { label: 'Appointment Report', route: 'reports.appointments', permission: 'appointment.report.view', },
-            
+          ],
+        },
+        {
+          icon: "fas fa-suitcase",
+          label: 'Customer',
+          route: '#',
+          permission: 'customer.view',
+          children: [
+            { label: 'Appointments', route: 'customer.index', permission: 'customer.view', },
           ]
         },
       ]
@@ -92,6 +100,12 @@ export default [
     {
       name: 'OTHERS',
       menuItems: [
+        {
+          icon: "fas fa-cogs",
+          label: 'Settings',
+          route: 'settings.index',
+          permission: 'setting.view',
+        },
       ]
     }
   ]

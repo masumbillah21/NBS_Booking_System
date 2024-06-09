@@ -67,6 +67,22 @@ class PermissionsSeeder extends Seeder
         "permission" => "user.delete"
       ],
       [
+        "name" => "Setting View",
+        "permission" => "setting.view"
+      ],
+      [
+        "name" => "Setting Create",
+        "permission" => "setting.create"
+      ],
+      [
+        "name" => "Setting Update",
+        "permission" => "setting.update"
+      ],
+      [
+        "name" => "Setting Delete",
+        "permission" => "setting.delete"
+      ],
+      [
         "name" => "Provider View",
         "permission" => "provider.view"
       ],
@@ -133,6 +149,26 @@ class PermissionsSeeder extends Seeder
       [
         "name" => "Appointment Report View",
         "permission" => "appointment.report.view"
+      ],
+      [
+        "name" => "Customer View",
+        "permission" => "customer.view"
+      ],
+      [
+        "name" => "Customer Edit",
+        "permission" => "customer.edit"
+      ],
+      [
+        "name" => "Customer Feedback",
+        "permission" => "customer.feedback"
+      ],
+      [
+        "name" => "Customer Reappointment",
+        "permission" => "customer.reappointment"
+      ],
+      [
+        "name" => "Customer Cancel",
+        "permission" => "customer.cancel"
       ],
     ];  
 

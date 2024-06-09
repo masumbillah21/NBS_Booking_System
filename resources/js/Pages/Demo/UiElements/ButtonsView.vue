@@ -2,7 +2,7 @@
 import BreadcrumbDefault from '@/Components/Breadcrumbs/BreadcrumbDefault.vue'
 import ButtonDefault from '@/Components/Buttons/ButtonDefault.vue'
 import ButtonsCard from '@/Components/Buttons/ButtonsCard.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 
 import { ref } from 'vue'
 
