@@ -2,11 +2,18 @@
 import { ref } from 'vue';
 import HeaderArea from '@/Components/Header/HeaderArea.vue'
 import SidebarArea from '@/Components/Sidebar/SidebarArea.vue'
+import { Head, usePage } from '@inertiajs/vue3';
+import { getSettings } from '@/utils/settings';
 
 const showingNavigationDropdown = ref(false);
+const urls = usePage().props.urls
 </script>
 
 <template>
+
+  <Head v-if="getSettings('site_favicon')">
+    <link rel="icon" type="image/png" :href="urls.storeUrl + getSettings('site_favicon')" />
+  </Head>
     <!-- ===== Page Wrapper Start ===== -->
   <div class="flex h-screen overflow-hidden">
     <!-- ===== Sidebar Start ===== -->
