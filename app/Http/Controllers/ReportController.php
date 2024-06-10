@@ -41,4 +41,9 @@ class ReportController extends Controller
          ]);
      }
 
+     public function exportAppointments()
+     {
+        return Inertia::render('Backend/Reports/Export');
+     }
+
 }

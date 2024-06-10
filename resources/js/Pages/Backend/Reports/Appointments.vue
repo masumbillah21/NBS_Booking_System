@@ -4,7 +4,7 @@
   import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
   import Vue3Datatable from '@bhplugin/vue3-datatable'
   import '@bhplugin/vue3-datatable/dist/style.css'
-  import { Head, useForm, usePage } from '@inertiajs/vue3'
+  import { Head, useForm, usePage, router } from '@inertiajs/vue3'
 
 
   let appointmentData: any = usePage().props.appointments
@@ -83,8 +83,12 @@
   const filteredService = computed(() => {
     if (!params.search) return appointmentData.slice(0, params.pagesize);
     const query = params.search.toLowerCase();
-    return appointmentData?.filter((item: any) => item.service.service_name.toLowerCase().includes(query) || item.status == filters.status);
+    return appointmentData?.filter((item: any) => item.service.service_name.toLowerCase().includes(query) || item.status == filterItems.status);
   })
+  const openExportPdf = () => {
+    sessionStorage.setItem('appointments', JSON.stringify(appointmentData));
+    router.visit(route('reports.appointments.export'));
+  };
 </script>
 
 <template>
@@ -126,7 +130,7 @@
             <option value="canceled">Canceled</option>
           </select>
         </div>
-        <button class="bg-slate-800 text-white p-2 inline-block rounded hover:bg-slate-700" >Export Report</button>
+        <button class="bg-slate-800 text-white p-2 inline-block rounded hover:bg-slate-700" @click="openExportPdf">Export Report</button>
       </div>
         <input type="text" placeholder="Search"
           class="rounded-lg border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
