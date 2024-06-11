@@ -93,17 +93,16 @@ public function update(Request $request, Appointment $appointment)
         'appointment_time' => 'nullable',
     ]);
 
-    // Debugging
-    Log::info('Validated Data', $validated);
+    $validated = $request->validate([
+        'client_id' => 'nullable|integer',
+        'staff_id' => 'nullable|integer',
+        'service_id' => 'nullable|integer',
+        'appointment_date' => 'nullable|date',
+        'appointment_time' => 'nullable',
+    ]);
 
-    try {
-        // Update the appointment
-        $appointment->update($validated);
-        return redirect()->route('customer.index')->with('success', 'Appointment updated successfully.');
-    } catch (\Exception $e) {
-        Log::error('Failed to update appointment', ['error' => $e->getMessage()]);
-        return redirect()->back()->with('error', 'Failed to update appointment. Please try again.');
-    }
+    $appointment->update($validated);
+    return redirect()->route('customer.index')->with('success', 'Appointment updated successfully.');
 }
 
 

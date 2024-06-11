@@ -96,7 +96,7 @@ const rows = ref(customerAppointmentData.map((customer: any, index: number) => {
   }
 }))
 
-const filteredService = computed(() => {
+const filteredCustomerAppointment = computed(() => {
   if (!params.search) return customerAppointmentData?.slice(0, params.pagesize);
   const query = params.search.toLowerCase();
   return customerAppointmentData?.filter((item: any) => item.service_name.toLowerCase().includes(query));
@@ -108,7 +108,7 @@ const filteredService = computed(() => {
     <Head title="Customer" />
     <!-- Breadcrumb Start -->
     <BreadcrumbDefault pageTitle="Customer" />
-    {{ customerAppointmentData }}
+    
     <!-- Breadcrumb End -->
     <div class="flex flex-col gap-10">
       <div class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -130,8 +130,8 @@ const filteredService = computed(() => {
             class="rounded-lg border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
             v-model="params.search" />
         </div>
-        <Vue3Datatable :rows="filteredService" :columns="cols" :sortable="true" :sortColumn="params.sort_column"
-          :sortDirection="params.sort_direction" :search="params.search" :columnFilter="true"
+        <Vue3Datatable :rows="rows" :columns="cols" :sortable="true" :sortColumn="params.sort_column"
+          :sortDirection="params.sort_direction" :search="params.search" :columnFilter="true" @change="filteredCustomerAppointment"
           :cloneHeaderInFooter="true" skin="bh-table-compact" class="column-filter p-4"
           rowClass="bg-white dark:bg-slate-800 dark:text-slate-300 dark:border-gray-600">
           <template #action="data">
