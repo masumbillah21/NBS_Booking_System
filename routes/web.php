@@ -5,17 +5,18 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SettingController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProvidersController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\ClientReportController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\CustomerController;
 
 Route::get('/', function () {
     return Inertia::render('Frontend/Welcome', [
@@ -67,6 +68,10 @@ Route::middleware(['auth','verified'])->group(function () {
     // Feedback for customer
     Route::get('/feedback/create/{appointment}', [CustomerController::class, 'createFeedback'])->name('feedback.create');
     Route::post('/feedback', [CustomerController::class, 'storeFeedback'])->name('feedback.store');
+
+    // Client Report
+    Route::get('/client/report', [ClientReportController::class, 'appointments'])->name('reports.appointments.client');
+
    
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

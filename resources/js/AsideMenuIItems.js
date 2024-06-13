@@ -104,6 +104,7 @@ export default [
           permission: 'appointment.report.view',
           children: [
             { label: 'Appointment Report', route: 'reports.appointments', permission: 'appointment.report.view', },
+            { label: 'Client Report', route: 'reports.appointments.client', permission: 'client.report.view', },
           ],
         },
       ]
