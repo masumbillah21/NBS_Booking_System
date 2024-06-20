@@ -17,6 +17,10 @@ const printPdf = () => {
 
 <template>
   <div id="print-area" class="container mx-auto p-4 mt-10 text-center">
+
+    <div>
+      <h2 class="text-xl font-bold mb-4">Company Name: {{ appointments[0].service.provider.company_name }}</h2>
+    </div>
     <h1 class="text-2xl font-bold mb-4">Appointment Report</h1>
     <table class="w-full border border-gray-300 dark:border-gray-700 text-left">
       <thead class="bg-gray-200 dark:bg-gray-700">

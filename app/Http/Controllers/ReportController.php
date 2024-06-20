@@ -12,6 +12,8 @@ class ReportController extends Controller
     {
         $timeFrame = $request->input('timeFrame', 'today');
         $status = $request->input('status', 'all');
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
 
          $query = Appointment::query();
          
@@ -25,12 +27,14 @@ class ReportController extends Controller
         elseif ($timeFrame == 'week') {
             $query->whereBetween('appointment_date', [now()->startOfWeek(), now()->endOfWeek()]);
         } elseif ($timeFrame == 'month') {
-            $query->whereMonth('appointment_date', now()->month);
+            $query->whereMonth('appointment_date', now()->month)->whereYear('appointment_date', now()->year);
         } elseif ($timeFrame == 'year') {
             $query->whereYear('appointment_date', now()->year);
+        } elseif ($timeFrame == 'custom' && $startDate && $endDate) {
+            $query->whereBetween('appointment_date', [$startDate, $endDate]);
         }
  
-         $appointments = $query->with(['service', 'client', 'staff'])->get();
+         $appointments = $query->with(['service', 'client', 'staff', 'service.provider'])->get();
 
          return Inertia::render('Backend/Reports/Appointments', [
              'appointments' => $appointments,
@@ -43,7 +47,9 @@ class ReportController extends Controller
 
      public function exportAppointments()
      {
-        return Inertia::render('Backend/Reports/Export');
+        $appointments = Appointment::with(['service', 'client', 'staff', 'service.provider'])->get();
+        return Inertia::render('Backend/Reports/Export',
+            ['appointments' => $appointments]);
      }
 
 }
