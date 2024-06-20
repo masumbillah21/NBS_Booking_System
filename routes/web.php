@@ -52,6 +52,9 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('providers', ProvidersController::class);
     //Reports
     Route::get('/reports/appointments', [ReportController::class, 'appointments'])->name('reports.appointments');
+    Route::get('/reports/appointments/export', [ReportController::class, 'exportAppointments'])->name('reports.appointments.export');
+    Route::post('/reports/appointments/export', [ReportController::class, 'exportAppointments'])->name('reports.appointments.export');
+
 
     // Appointment for Customer
     Route::resource('customer',CustomerController::class);
