@@ -7,6 +7,7 @@ use App\Models\Service;
 use App\Models\Category;
 use App\Models\Provider;
 use Illuminate\Http\Request;
+use App\Helper\AppointmentTimeSlot;
 use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
@@ -20,7 +21,8 @@ class ServiceController extends Controller
             abort(403);
         }
         
-        $services = Service::with('category', 'provider')->get();
+        $provider_id = Auth::user()->provider_id;
+        $services = Service::with('category', 'provider')->where('provider_id', $provider_id)->latest()->get();
         return Inertia::render('Backend/Services/Index', ['services' => $services]);
     }
 
@@ -33,10 +35,11 @@ class ServiceController extends Controller
             abort(403);
         }
 
-        $services = Service::all();
-        $categories = Category::select('id', 'category_name as label')->get();
-        $providers = Provider::select('id', 'company_name as label')->where('status', 1)->get();
-        return Inertia::render('Backend/Services/Edit', ['services' => $services, 'categories' => $categories, 'providers' => $providers]);
+        $timeSlots = AppointmentTimeSlot::slots();
+        $cate_id = Provider::select('category_id')->where('status', 1)->first();
+        
+        $categories = Category::select('id', 'category_name as label')->where('parent_id', $cate_id->category_id)->get();
+        return Inertia::render('Backend/Services/Edit', compact('timeSlots', 'categories'));
     }
 
     /**
@@ -54,19 +57,16 @@ class ServiceController extends Controller
             'duration' => 'required|integer',
             'price' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
-            'provider_id' => 'required|exists:providers,id',
         ]);
 
-        $service = Service::create([
+        Service::create([
             'service_name' => $request->service_name, 
             'description' => $request->description, 
             'duration' => $request->duration, 
             'price' => $request->price,
-            'provider_id' => $request->provider_id,
+            'provider_id' => Auth::user()->provider_id,
+            'category_id' => $request->category_id
         ]);    
-
-        $service->category()->attach($request->category_id);
-        // $service->provider()->attach($request->provider_id);
 
         return redirect()->back()->with('success', 'Service created successfully.');
     }
@@ -89,9 +89,10 @@ class ServiceController extends Controller
         }
 
         $service = Service::findOrFail($id)->with('category')->first();
-        $categories = Category::select('id', 'category_name as label')->get();
-        $providers = Provider::select('id', 'company_name as label')->where('status', 1)->get();
-        return Inertia::render('Backend/Services/Edit', ['service' => $service, 'categories' => $categories, 'providers' => $providers]);
+        $timeSlots = AppointmentTimeSlot::slots();
+        $cate_id = Provider::select('category_id')->where('status', 1)->first(); 
+        $categories = Category::select('id', 'category_name as label')->where('parent_id', $cate_id->category_id)->get();
+        return Inertia::render('Backend/Services/Edit', compact('service', 'timeSlots', 'categories'));
     }
     
 
@@ -104,18 +105,17 @@ class ServiceController extends Controller
             abort(403);
         }
 
-        $request->validate([
+        $validation = $request->validate([
             'service_name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'duration' => 'required|integer',
             'price' => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
-            'provider_id' => 'required',
         ]);
 
-        $service->update(['service_name' => $request->service_name, 'description' => $request->description, 'duration' => $request->duration, 'price' => $request->price]);
-        $service->category()->sync($request->category_id);
-        return redirect()->route('services.index')->with('success', 'Service updated successfully.');
+        $service->update($validation );
+        
+        return redirect()->back()->with('success', 'Service updated successfully.');
     }
 
     /**
@@ -128,8 +128,7 @@ class ServiceController extends Controller
         }
 
         $service = Service::findOrFail($id);
-        $service->category()->detach();
         $service->delete();
-        return redirect()->route('services.index')->with('success', 'Service deleted successfully.');
+        return redirect()->back()->with('success', 'Service deleted successfully.');
     }
 }

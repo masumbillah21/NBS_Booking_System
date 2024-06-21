@@ -40,7 +40,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
                 'profile' => $request->user() ? $request->user()->profile : null,
-                'role' => $request->user() ? $request->user()->roles()->first() : null,
+                'role' => $request->user() ? $request->user()->role()->first() : null,
                 'permissions' => $request->user() ? $permissions : [],
             ],
             'ziggy' => fn () => [
@@ -55,31 +55,25 @@ class HandleInertiaRequests extends Middleware
     }
     private function getUserPermissions(Request $request)
     {
-        
         if (!$request->user()) {
             return [];
         }
-        
+
         $user = $request->user();
 
-        
-
-        if ($user->roles() == null) {
+        if ($user->role()->count() == 0) {
             return [];
         }
 
-        $roles = $user->roles()->with('permissions')->get();
+        $role = $user->role()->with('permissions')->get();
 
-        
-
-        $permissions = $roles->flatMap(function ($role) {
+        $permissions = $role->flatMap(function ($role) {
             return $role->permissions;
         });
 
         $uniquePermissions = $permissions->unique('id');
 
-
-
-        return $uniquePermissions;
+        return $uniquePermissions->values();
     }
+
 }

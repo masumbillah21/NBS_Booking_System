@@ -17,11 +17,12 @@ class Service extends Model
         'duration',
         'price',
         'provider_id',
+        'category_id',
     ];
 
     public function category()
     {
-        return $this->belongsToMany(Category::class, 'service_category');
+        return $this->belongsTo(Category::class);
     }
 
     public function provider()

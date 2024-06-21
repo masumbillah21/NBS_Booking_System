@@ -10,7 +10,7 @@
   import { Head, useForm, usePage } from '@inertiajs/vue3'
 
   const providerData: any = usePage().props.providerData
-  const storage = usePage().props.urls
+  const storage: any = usePage().props.urls
 
   const form: any = useForm({
     id: 0,
@@ -53,10 +53,11 @@
 
   const cols = ref([
     { title: 'SL', field: 'sl', isUnique: true, type: 'number', width: '40px', hide: false },
+    { title: 'Logo', field: 'logo', hide: false },
     { title: 'Company Name', field: 'company_name', width: '200px', hide: false },
+    { title: 'Category', field: 'category', width: '200px', hide: false },
     { title: 'Email', field: 'email', hide: false },
     { title: 'Phone', field: 'phone_number', hide: false },
-    { title: 'Logo', field: 'logo', hide: false },
     { title: 'Created', field: 'created_at', width: '200px', hide: false },
     { title: 'Updated', field: 'updated_at', width: '200px', hide: false },
     { title: 'Action', field: 'action',width: '200px', hide: false },
@@ -67,6 +68,7 @@
       sl: index + 1,
       id: provider.id,
       company_name: provider.company_name,
+      category: provider.category.category_name,
       email: provider.email,
       phone_number: provider.phone_number,
       logo: provider.logo,

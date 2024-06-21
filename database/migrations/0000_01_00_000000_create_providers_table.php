@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('providers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
             $table->string('company_name');
             $table->text('description');
             $table->string('logo')->nullable();
             $table->string('address');
             $table->string('phone_number');
             $table->string('email')->unique();
+            $table->foreignId('category_id')->constrained('categories');
             $table->integer('status')->default(0);
             $table->string('slug')->unique();
             $table->timestamps();

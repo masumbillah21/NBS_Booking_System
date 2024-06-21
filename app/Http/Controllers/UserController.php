@@ -64,8 +64,8 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'designation' => $request->designation,
             'status' => $request->status,
+            'role_id' => $request->role
         ]);
-        $user->roles()->attach($request->role);
         return redirect()->route('users.index');
     }
 
@@ -114,14 +114,15 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'designation' => $request->designation,
-            'status' => $request->status
+            'status' => $request->status,
+            'role_id' => $request->role
         ];
 
         if ($request->password) {
             $data['password'] = Hash::make($request->password);
         }
         $user->update($data);
-        $user->roles()->sync($request->role);
+
         return redirect()->route('users.index');
     }
 
@@ -135,7 +136,6 @@ class UserController extends Controller
         }
         
         $user = User::find($id);
-        $user->roles()->detach();
         $user->delete();
         return redirect()->route('users.index');
     }

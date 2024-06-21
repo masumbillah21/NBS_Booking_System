@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Role;
 use App\Trait\DateTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, DateTrait;
+    use HasFactory, Notifiable, DateTrait, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -26,6 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'designation',
         'status',
+        'provider_id',
     ];
 
     /**
@@ -51,9 +53,14 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function roles(): BelongsToMany
+    public function role()
     {
-        return $this->belongsToMany(Role::class, 'user_role');
+        return $this->belongsTo(Role::class);
+    }
+
+    public function provider()
+    {
+        return $this->belongsTo(Provider::class);
     }
 
     public function profile(){
@@ -72,8 +79,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function hasPermission($permission)
     {
-        return $this->roles->flatMap(function ($role) use ($permission) {
-            return $role->permissions->pluck('permission');
-        })->contains($permission);
+        if (!$this->role) {
+            return false;
+        }
+        $permissions = $this->role->permissions->pluck('permission');
+        return $permissions->contains($permission);
     }
+
 }

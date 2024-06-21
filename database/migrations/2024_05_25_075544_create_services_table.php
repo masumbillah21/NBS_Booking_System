@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('duration'); 
             $table->integer('price');
             $table->foreignId('provider_id')->constrained();
+            $table->foreignId('category_id')->constrained();
             $table->timestamps();
         });
     }

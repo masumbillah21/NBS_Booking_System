@@ -10,7 +10,7 @@ const dropdownOpen = ref(false)
 
 const user: any = usePage().props.auth.user;
 const profile: any = usePage().props.auth.profile;
-const storeUrl: string = usePage().props.urls.storeUrl
+const url: any = usePage().props.urls
 
 onClickOutside(target, () => {
   dropdownOpen.value = false
@@ -20,7 +20,7 @@ const form = useForm({
 })
 
 const logout = () => {
-  form.post('logout')
+  form.post(route('logout'))
 }
 </script>
 
@@ -37,7 +37,7 @@ const logout = () => {
       </span>
 
       <span class="h-12 w-12 rounded-full">
-        <img v-if="profile && profile.photo" :src="storeUrl + profile.photo" alt="User" class="rounded-full" />
+        <img v-if="profile && profile.photo" :src="url.storeUrl + profile.photo" alt="User" class="rounded-full" />
         <img v-else src="@/assets/images/user/user-01.png" alt="User" />
       </span>
       <BaseIcon path="fas fa-chevron-down" />

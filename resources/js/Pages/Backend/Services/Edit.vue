@@ -11,7 +11,7 @@
 
     const serviceData: any = usePage().props.service ?? null;
     const categories: any = usePage().props.categories ?? null;
-    const providers: any = usePage().props.providers ?? null;
+    const timeSlots: any = usePage().props.timeSlots ?? null;
 
     const form: any = useForm({
         id: '',
@@ -20,7 +20,6 @@
         duration: '',
         price: '',
         category_id: "",
-        provider_id: '',
     });
 
 
@@ -30,11 +29,8 @@
         form.description = serviceData.description
         form.duration = serviceData.duration
         form.price = serviceData.price
-        form.category_id = serviceData.category[0].id
-        form.provider_id = serviceData.provider_id
+        form.category_id = serviceData.category_id
     }
-
-    console.log(serviceData.service_name)
     const submit = () => {
         if (serviceData !== null) {
             update();
@@ -66,6 +62,11 @@
         <!-- Breadcrumb End -->
         <DefaultCard cardTitle="Create Service">
             <form @submit.prevent="submit">
+
+                <SelectGroup label="Service Category" class="mb-2" id="category"
+                    v-model="form.category_id" :options="categories" />
+                <InputError class="mt-2" :message="form.errors.category_id" />
+
                 <InputGroup label="Service Name" class="mb-2" type="text" id="service_name" placeholder="Enter service name"
                     v-model="form.service_name" required autofocus autocomplete="service_name">
                 </InputGroup>
@@ -76,23 +77,14 @@
                 </InputGroup>
                 <InputError class="mt-2" :message="form.errors.description" />
 
-                <InputGroup type="number" label="Duration of Service" class="mb-2" id="duration" placeholder="Select service duration"
-                    v-model="form.duration">
-                </InputGroup>
+                <SelectGroup label="Duration" class="mb-2" id="duration"
+                    v-model="form.duration" :options="timeSlots" />
                 <InputError class="mt-2" :message="form.errors.duration" />
 
-                <InputGroup type="number" label="Price of Service" class="mb-2" id="price" placeholder="Select service price"
+                <InputGroup type="number" label="Serive Charge" class="mb-2" id="price" placeholder="Select service price"
                     v-model="form.price">
                 </InputGroup>
                 <InputError class="mt-2" :message="form.errors.price" />
-
-                <SelectGroup label="Service Category" class="mb-2" id="category"
-                    v-model="form.category_id" :options="categories" />
-                <InputError class="mt-2" :message="form.errors.category_id" />
-
-                <SelectGroup label="Service Provider" class="mb-2" id="provider"
-                    v-model="form.provider_id" :options="providers" />
-                <InputError class="mt-2" :message="form.errors.provider_id" />
 
                 <button type="submit"
                     class="mt-3 cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"

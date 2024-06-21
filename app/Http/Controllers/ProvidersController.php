@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+
+use App\Models\Category;
 use App\Models\Provider;
 use App\Helper\ImageHelper;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class ProvidersController extends Controller
         }
         
         return inertia()->render('Backend/Providers/index', [
-            'providerData' => Provider::latest()->get()
+            'providerData' => Provider::with('category')->orderBy('id', 'desc')->get()
         ]);
     }
 
@@ -34,9 +35,8 @@ class ProvidersController extends Controller
         if (!Auth::user()->hasPermission('provider.create')) {
             abort(403);
         }
-        return inertia()->render('Backend/Providers/edit', [
-            'users' => User::select('id', 'name as label')->get(),
-        ]);
+        $categories = Category::select('id', 'category_name as label')->where('parent_id', null)->get();
+        return inertia()->render('Backend/Providers/Edit', compact('categories'));
     }
 
     /**
@@ -49,8 +49,8 @@ class ProvidersController extends Controller
         }
         
         $request->validate([
-            'user_id' => 'required|exists:users,id',
             'company_name' => 'required|string|max:256',
+            'category_id' => 'required|exists:categories,id',
             'email' => 'required|email|string|max:255',
             'phone_number' => 'required|string',
             'description' => 'required|string',
@@ -67,8 +67,8 @@ class ProvidersController extends Controller
         $slug = GenerateUniqueSlug::slug($request->company_name, Provider::class);
 
         Provider::create([
-            'user_id' => $request->user_id,
             'company_name' => $request->company_name,
+            'category_id' => $request->category_id,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
             'description' => $request->description,
@@ -97,11 +97,9 @@ class ProvidersController extends Controller
         if (!Auth::user()->hasPermission('provider.update')) {
             abort(403);
         }
-
-        return inertia()->render('Backend/Providers/edit', [
-            'providerData' => Provider::find($id),
-            'users' => User::select('id', 'name as label')->get(),
-        ]);
+        $categories = Category::select('id', 'category_name as label')->where('parent_id', null)->get();
+        $providers = Provider::find($id);
+        return inertia()->render('Backend/Providers/Edit', compact('categories', 'providers'));
     }
 
     /**
@@ -118,8 +116,8 @@ class ProvidersController extends Controller
         $serviceProvider = Provider::findOrFail($request->id);
     
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
             'company_name' => 'required|string|max:256',
+            'category_id' => 'required|exists:categories,id',
             'email' => 'required|email|string|max:255',
             'phone_number' => 'required|string',
             'description' => 'required|string',
@@ -139,7 +137,7 @@ class ProvidersController extends Controller
         if($request->company_name != $serviceProvider->company_name){
             $validated['slug'] = GenerateUniqueSlug::slug($request->company_name, Provider::class);
         }
-    
+
         $serviceProvider->update($validated);
     
         return redirect()->back()->with('success', 'Services Provider updated successfully!');

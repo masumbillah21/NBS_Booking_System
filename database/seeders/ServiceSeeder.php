@@ -17,11 +17,12 @@ class ServiceSeeder extends Seeder
 
         foreach (range(1, 50) as $index) {
             DB::table('services')->insert([
-                'service_name' => $faker->name(),
+                'service_name' => $faker->words(2, true),
                 'description' => $faker->optional()->paragraph,
-                'duration' => $faker->numberBetween(30, 240), // Duration in minutes
-                'price' => $faker->numberBetween(100, 1000), // Price in arbitrary currency units
-                'provider_id' => $faker->numberBetween(1, 10), // Assuming you have providers with IDs from 1 to 10
+                'duration' => $faker->numberBetween(30, 240),
+                'price' => $faker->numberBetween(100, 1000),
+                'provider_id' => $faker->numberBetween(1, 10),
+                'category_id' => $faker->numberBetween(1, 5),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

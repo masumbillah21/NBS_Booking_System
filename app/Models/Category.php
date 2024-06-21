@@ -23,6 +23,10 @@ class Category extends Model
     }
 
     public function services(){
-        return $this->belongsToMany(Service::class, 'service_category');
+        return $this->hasMany(Service::class);
+    }
+
+    public function providers(){
+        return $this->hasMany(Provider::class);
     }
 }

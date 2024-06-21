@@ -13,6 +13,7 @@ class Provider extends Model
     protected $fillable = [
         'user_id',
         'company_name',
+        'category_id',
         'description',
         'logo',
         'address',
@@ -23,6 +24,10 @@ class Provider extends Model
     ];
 
     function Users(){
-        return $this->belongsTo(User::class);
+        return $this->hasMany(User::class);
+    }
+
+    function category(){
+        return $this->belongsTo(Category::class);
     }
 }

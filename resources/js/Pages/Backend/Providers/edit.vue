@@ -9,10 +9,10 @@ import FormFilePicker from '@/Components/Forms/FormFilePicker.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3'
 import FormCheckRadioGroup from '@/Components/FormCheckRadioGroup.vue';
 
-const providerData: any = usePage().props.providerData ?? null
-const storage = usePage().props.urls
+const providerData: any = usePage().props.providers ?? null
+const categories: any = usePage().props.categories
+const storage: any = usePage().props.urls
 
-const users: any = usePage().props.users ?? null
 const status = {
         0: "Inactive",
         1: "Active",
@@ -20,27 +20,27 @@ const status = {
 
 const form: any = useForm({
     id: 0,
-    'company_name': '',
-    'email': '',
-    'phone_number': '',
-    'description': '',
-    'logo': '',
-    'address': '',
-    'status': '',
-    'user_id': '',
+    company_name: '',
+    category_id: '',
+    email: '',
+    phone_number: '',
+    description: '',
+    logo: '',
+    address: '',
+    status: '',
     _method: "post",
 });
 
 if (providerData !== null) {
     form.id = providerData.id
     form.company_name = providerData.company_name
+    form.category_id = providerData.category_id
     form.email = providerData.email
     form.phone_number = providerData.phone_number
     form.description = providerData.description
    
     form.address = providerData.address
     form.status = providerData.status
-    form.user_id = providerData.user_id
     form._method = 'put'
 }
 
@@ -72,14 +72,15 @@ const update = () => {
         <!-- Breadcrumb End -->
         <DefaultCard :cardTitle="(providerData !== null) ? 'Edit Provider' : 'Create Provider'">
             <form @submit.prevent="submit">
-
-                <SelectGroup label="Users" :options="users" v-model="form.user_id"/>
-                <InputError class="mt-2" :message="form.errors.user_id" />
-                
                 <InputGroup label="Company Name" class="mb-2" type="text" id="company_name" placeholder="Enter Company Name"
                     v-model="form.company_name" required autofocus autocomplete="company_name">
                 </InputGroup>
                 <InputError class="mt-2" :message="form.errors.company_name" />
+
+                <SelectGroup label="Category" class="mb-2" id="category"
+                    v-model="form.category_id" :options="categories" />
+                <InputError class="mt-2" :message="form.errors.category_id" />
+
 
                 <InputGroup label="Email" class="mb-2" type="email" id="email" placeholder="Enter Email"
                     v-model="form.email" required autofocus autocomplete="email">

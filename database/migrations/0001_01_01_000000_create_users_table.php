@@ -18,8 +18,11 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('designation')->nullable();
+            $table->foreignId('provider_id')->nullable()->constrained('providers')->restrictOnDelete();
+            $table->foreignId('role_id')->nullable()->constrained('roles')->restrictOnDelete();
             $table->boolean('status')->default(1);
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
 
